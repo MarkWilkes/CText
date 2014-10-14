@@ -38,18 +38,36 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QtCore>
+#ifndef SERVER_H
+#define SERVER_H
 
-#include <stdlib.h>
+#include <QDialog>
+#include <QDebug>
 
-#include "server.h"
+QT_BEGIN_NAMESPACE
+class QLabel;
+class QPushButton;
+class QTcpServer;
+class QNetworkSession;
+QT_END_NAMESPACE
 
-int main(int argc, char *argv[])
+class Server : public QDialog
 {
-    QApplication app(argc, argv);
-    Server server;
-    server.show();
-    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-    return app.exec();
-}
+    Q_OBJECT
+
+public:
+    Server(QWidget *parent = 0);
+
+private slots:
+    void sessionOpened();
+    void sendFortune();
+
+private:
+    QLabel *statusLabel;
+    QPushButton *quitButton;
+    QTcpServer *tcpServer;
+    QStringList fortunes;
+    QNetworkSession *networkSession;
+};
+
+#endif
