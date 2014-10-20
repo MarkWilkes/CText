@@ -9,19 +9,19 @@ QT      += network
 
 
 TARGET = cuTPSClient
-CONFIG   += console
-CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
 SOURCES += main.cpp \
     clientconnection.cpp \
-    logincontroller.cpp
+    logincontroller.cpp \
+    cutpsclient.cpp
 
 FORMS += \
     loginPage.ui
 
 HEADERS += \
     clientconnection.h \
-    logincontroller.h
+    logincontroller.h \
+    cutpsclient.h

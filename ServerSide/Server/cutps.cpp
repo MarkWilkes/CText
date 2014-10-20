@@ -3,6 +3,7 @@
 cuTPS::cuTPS() :
     accessControl(AccessControl::getInstance())
 {
+
 }
 
 cuTPS::~cuTPS()
@@ -22,7 +23,7 @@ QString cuTPS::serveRequest(QString index, QString data)
             return QString("ContentManager");
         } else if(result.compare("Administrator") == 0){
             return QString("Adminstrator");
-        } else if(result.compare("loggedin")){
+        } else if(result.compare("loggedin") == 0){
             return QString("loggedin");
         } else {
             return QString("fail");

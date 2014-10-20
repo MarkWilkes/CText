@@ -17,16 +17,23 @@ QString AccessControl::logIn(QString userID)
 {
     if(isLoggedIn(userID)) return "loggedin";
     QString role, userName;
-    datacontrol.verifyUser(userID, userName, role);
-    if(role == QString("Student"))
-    {
 
-    } else if(role == QString("ContentManager")){
-
-    } else if(role == QString("Administrator")){
-
+    if(datacontrol.verifyUser(userID, userName, role)){
+        if(role == QString("Student"))
+        {
+            Student *temp = new Student(userID, userName);
+            loggedOnUser.insert(userID, temp);
+        } else if(role == QString("ContentManager")){
+            ContentManager *temp = new ContentManager(userID, userName);
+            loggedOnUser.insert(userID, temp);
+        } else if(role == QString("Administrator")){
+            Administrator *temp = new Administrator(userID, userName);
+            loggedOnUser.insert(userID, temp);
+        }
+        return role;
+    } else {
+        return "fail";
     }
-    return role;
 
 }
 
@@ -38,7 +45,6 @@ bool AccessControl::logOut(QString ID)
         loggedOnUser.remove(ID);
         return true;
     } else {
-        qDebug() << "can't find the user, already log out" << endl;
         return false;
     }
 }

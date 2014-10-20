@@ -1,24 +1,24 @@
 #include "serverconnection.h"
 
-ServerConnection::ServerConnection() : tcpServer(0)
+ServerConnection::ServerConnection(QObject *parent) :  QObject(parent), tcpServer(0)
 {
     tcpServer = new QTcpServer(this);
     takeNext = true;
     tcpServer->setMaxPendingConnections(100);
 
     /*Get info from the config file*/
-    QSettings *config = new QSettings("config.ini",QSettings::IniFormat);
+    QSettings *config = new QSettings("../Common/config.ini",QSettings::IniFormat);
     config->setIniCodec("UTF8");
     config->beginGroup("information");
-    QString ip = config->value("ServerIp").toString();
+    QString ip=config->value("ServerIp").toString();
     int portNumber = config->value("portNumber").toInt();
     ipAddress = QHostAddress(ip);
     port = portNumber;
     config->endGroup();
-    qDebug() << "Maximun PendingConnection Number" << tcpServer->maxPendingConnections() << endl;
+    qDebug()<< "Maxmium pending connection # : " << tcpServer->maxPendingConnections() << endl;
     if(tcpServer->listen(ipAddress,port))
     {
-        qDebug() << ipAddress << portNumber << endl;
+        qDebug() << "listen to : " << ipAddress << portNumber << endl;
     }
     else
     {
@@ -37,25 +37,25 @@ ServerConnection::~ServerConnection(){
  {
      if(takeNext)
      {
-        tcpSocket = tcpServer->nextPendingConnection();
-        takeNext = false;
+     tcpSocket = tcpServer->nextPendingConnection();
+     takeNext = false;
 
-        qDebug() << "new connection established" << endl;
+     qDebug() << "new connection established" << endl;
 
-        if(tcpSocket->state() == QTcpSocket::ConnectedState)
-        {
-            qDebug() << "Client is connected now!" <<endl;
-            tcpSocket->flush(); //To clear the socket
-        }
-        else
-        {
-            qDebug() << "socket failed" << endl;
-        }
+     if(tcpSocket->state() == QTcpSocket::ConnectedState)
+     {
+        qDebug() << "Client is connected now!" <<endl;
+       tcpSocket->flush(); //To clear the socket
+     }
+     else
+     {
+         qDebug() << "socket failed" << endl;
+     }
 
-        if(tcpSocket->waitForReadyRead())
-        {
-            emit getMsg();
-        }
+     if(tcpSocket->waitForReadyRead())
+     {
+        emit getMsg();
+     }
      }
      else
      {

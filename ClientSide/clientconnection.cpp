@@ -5,7 +5,7 @@ ClientConnection::ClientConnection(QObject *parent) :
 {
     tcpSocket = new QTcpSocket(this);
     /*Get info from the config file*/
-    QSettings *config = new QSettings("config.ini",QSettings::IniFormat);
+    QSettings *config = new QSettings("../Common/config.ini",QSettings::IniFormat);
     config->setIniCodec("UTF8");
     config->beginGroup("information");
     QString ip=config->value("HostAddress").toString();
@@ -15,7 +15,6 @@ ClientConnection::ClientConnection(QObject *parent) :
     config->endGroup();
 
     connect(tcpSocket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(errorReport()));
-
 }
 
 ClientConnection::~ClientConnection(){
@@ -46,7 +45,7 @@ QString ClientConnection::sendRequest(QString request, QString data)
     return reply;
 }
 
- void ClientConnection::errorReport()
+void ClientConnection::errorReport()
 {
      //because we are put all the requests in the pending list and handle them
      //one by one, so we will tolerate the RemoteHostClosedError

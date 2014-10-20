@@ -3,7 +3,6 @@
 
 #include "../Common/user.h"
 #include "DataControl/datacontroller.h"
-#include <QDebug>
 
 typedef QMap<QString, User*> UserList;
 

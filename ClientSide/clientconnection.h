@@ -15,7 +15,8 @@ public:
     ~ClientConnection();
 
 private slots:
-        void errorReport();
+    void errorReport();
+
 private:
     QHostAddress ipAddress;
     int          port;

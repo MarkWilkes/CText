@@ -3,10 +3,11 @@
 #include "serverconnection.h"
 #include "cutps.h"
 
-class Server
+class Server : public QObject
 {
+    Q_OBJECT
 public:
-    Server();
+    Server(QObject *parent = 0);
     ~Server();
 
 private slots:

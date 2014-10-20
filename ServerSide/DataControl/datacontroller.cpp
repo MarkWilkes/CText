@@ -19,12 +19,13 @@ bool dataController::verifyUser(QString userID, QString &userName, QString &role
         QStringList infoUserSplit = temp.split("|");
         QString data_userID = infoUserSplit[0];
         if(userID == data_userID)
-        {
+        {            
+            userName = infoUserSplit[1];
+            role = infoUserSplit[2];
+            role = role.simplified();
             result = true;
             break;
         }
-        userName = infoUserSplit[1];
-        role = infoUserSplit[2];
     }
     file.close();
     return result;

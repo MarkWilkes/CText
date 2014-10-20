@@ -1,7 +1,8 @@
 #include "server.h"
 #include "stdio.h"
 
-Server::Server()
+Server::Server(QObject *parent)
+    :QObject(parent)
 {
     s = new ServerConnection();
     connect(s,SIGNAL(getMsg()),this,SLOT(getRequest()));
@@ -25,5 +26,6 @@ void Server::getRequest()
            data.append("|");
        }
     }
+
     s->sendDataBack(model.serveRequest(request,data).toUtf8());
 }
