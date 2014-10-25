@@ -5,8 +5,8 @@
 #-------------------------------------------------
 
 QT       += core
-QT       += network widgets
-QT       -= gui
+QT       += network
+QT       += gui
 
 TARGET = cuTPSServer
 CONFIG   += console

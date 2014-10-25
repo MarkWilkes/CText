@@ -1,2 +1,4 @@
 UserID|UserName|UserType
-gdf1992803|dongfeng|Student
+frank|dongfeng|Student
+uri|asdf|ContentManager
+mark|mark|Administrator
