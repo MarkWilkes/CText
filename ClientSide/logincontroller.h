@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QMainWindow>
-#include <QMessageBox>
 #include <ui_loginPage.h>
 #include "clientconnection.h"
 
@@ -20,13 +19,15 @@ public:
 
 private slots:
     void on_Login_button_clicked();
+    void logOutButtonClicked();
 
 signals:
     void sendLoginState(QString role, QString userID);
-
+    void sendLogoutState(QString role);
 private:
     ClientConnection *c;
     Ui::MainWindow *ui;
+    QString userID;
 };
 
 #endif // LOGINCONTROLLER_H

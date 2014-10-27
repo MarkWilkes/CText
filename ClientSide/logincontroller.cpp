@@ -7,6 +7,7 @@ LoginController::LoginController(QObject *parent, ClientConnection *cClient, Ui:
     c = cClient;
 
     connect(ui->Login_button, SIGNAL(clicked()), this, SLOT(on_Login_button_clicked()));
+    connect(ui->logout_button, SIGNAL(clicked()), this, SLOT(logOutButtonClicked()));
     //set the username textfiel as the mian focus
     ui->username->setFocus();
 }
@@ -25,7 +26,7 @@ void LoginController::on_Login_button_clicked()
 
             //If user exists then put the username on the top right corner label
             QString userID = ui->username->text();
-
+            this->userID = userID;
             //Find out what kind of user logged on, then call the correct initialize function
             if(role.compare("Student") == 0){
                 emit sendLoginState("Student", userID);
@@ -41,6 +42,17 @@ void LoginController::on_Login_button_clicked()
         }
     } else {
         emit sendLoginState("empty", "");
+    }
+}
+
+void LoginController::logOutButtonClicked()
+{
+    QString role = c->sendRequest("logoutRequest|", userID);
+    if(role == "true")
+    {
+        emit sendLogoutState("true");
+    } else {
+        emit sendLogoutState("false");
     }
 }
 

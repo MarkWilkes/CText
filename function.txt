@@ -1,0 +1,18 @@
+#login function
+#function for Student
+	1. view list of required e-textbooks for each course in which they are registered for a given term.
+	2. for each e-textbook, they can see what individual chapters and
+chapter sections are available for purchase. (price should be included)
+	3. add any item to their shopping cart. (can't modify or delete items
+from their shopping cart)
+	4. place order or cancel order (once order complete , show the
+successs message)
+
+#function for Content manager
+	1. create, modify and delete course and e-textbook information
+	2. as well as the chapter and section availability
+
+#function for administrator
+	1. run reports
+	2. add, modify and delete user accounts, including billing and
+delivery information

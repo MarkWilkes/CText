@@ -2,6 +2,7 @@
 #define STUDENT_H
 
 #include "user.h"
+#include "course.h"
 
 class Student : public User
 {
@@ -11,8 +12,12 @@ public:
     Student(QString id, QString name);
     QString getUserType(){return QString("Student");}
 
-private:
+    QList<Course *> getCourses() const;
+    void setCourses(const QList<Course *> &value);
+    void addCourse(Course *value);
 
+private:
+    QList<Course*> courses;
 
 };
 

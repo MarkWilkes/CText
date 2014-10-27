@@ -9,6 +9,7 @@
 
 #include "clientconnection.h"
 #include "logincontroller.h"
+#include "studentcontroller.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,11 +24,14 @@ public:
 
 public slots:
     void getLoginState(QString role, QString userID);
-
+    void getStudentMsg(QString role, QString message);
+    void getLogoutState(QString role);
 private:
     Ui::MainWindow *ui;
     ClientConnection *c;
     LoginController *logincontrol;
+    StudentController *studentControl;
+    QString userIDString;
 };
 
 #endif // CUTPSCLIENT_H

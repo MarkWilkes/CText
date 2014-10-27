@@ -2,6 +2,7 @@
 
 AccessControl::AccessControl()
 {
+    datacontrol = new dataController();
 }
 
 AccessControl::~AccessControl()
@@ -16,9 +17,9 @@ AccessControl::~AccessControl()
 QString AccessControl::logIn(QString userID)
 {
     if(isLoggedIn(userID)) return "loggedin";
-    QString role, userName;
+    QString role, userName, coursesString;
 
-    if(datacontrol.verifyUser(userID, userName, role)){
+    if(datacontrol->verifyUser(userID, userName, role, coursesString)){
         if(role == QString("Student"))
         {
             Student *temp = new Student(userID, userName);

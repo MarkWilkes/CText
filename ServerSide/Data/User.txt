@@ -1,4 +1,4 @@
-UserID|UserName|UserType
-frank|dongfeng|Student
+UserID|UserName|UserType|RegistedCourses
+frank|dongfeng|Student|COMP3004
 uri|asdf|ContentManager
 mark|mark|Administrator

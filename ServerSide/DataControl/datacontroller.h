@@ -13,7 +13,11 @@ public:
     dataController();
 
     //API
-    bool verifyUser(QString userID, QString &userName, QString &role);
+    bool verifyUser(QString userID, QString &userName, QString &role, QString &courses);
+    QString getRegistedCourse(QString studentID);
+    QString getBookInfoFromID(QString bookID);
+    QString getChapterInfoFromID(QString chapterID);
+    QString getSectionInfoFromID(QString sectionID);
 
 };
 

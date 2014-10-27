@@ -23,7 +23,7 @@ public:
 
 private:
     AccessControl();
-    dataController datacontrol;
+    dataController *datacontrol;
     UserList loggedOnUser;
 
 };
