@@ -2,9 +2,9 @@
 #define PERSISTIMP_H
 
 
-#include "../common/student.h"
-#include "../common/contentmanager.h"
-#include "../common/administrator.h"
+#include "../Common/student.h"
+#include "../Common/contentmanager.h"
+#include "../Common/administrator.h"
 #include <QtCore>
 
 class PersistImp {
