@@ -42,7 +42,6 @@ void cuTPSClient::getLoginState(QString role, QString userID)
         //just pop up the message
         QString temp = userID + " : Already logged in";
         QMessageBox::critical(this,tr("cuTPS"),temp);
-        studentControl->initialize(userID);
     }else if(role.compare("fail") == 0){
         //just pop up the message
         QMessageBox::critical(this, tr("cuTPS"), tr("Error User, System don't have this User"));

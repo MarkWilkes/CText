@@ -23,8 +23,11 @@ bool dataController::verifyUser(QString userID, QString &userName, QString &role
             userName = infoUserSplit[1];
             role = infoUserSplit[2];
             role = role.simplified();
-            courses = infoUserSplit[3];
-            courses = courses.simplified();
+            if(role == "Student")
+            {
+                courses = infoUserSplit[3];
+                courses = courses.simplified();
+            }
             result = true;
             break;
         }
