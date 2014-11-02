@@ -8,7 +8,7 @@ LoginController::LoginController(QObject *parent, ClientConnection *cClient, Ui:
 
     connect(ui->Login_button, SIGNAL(clicked()), this, SLOT(on_Login_button_clicked()));
     connect(ui->logout_button, SIGNAL(clicked()), this, SLOT(logOutButtonClicked()));
-    //set the username textfiel as the mian focus
+    //set the username textfiel as the main focus
     ui->username->setFocus();
 }
 
