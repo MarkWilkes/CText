@@ -68,58 +68,63 @@ void StudentController::viewCourseButtonClicked()
                     Book *book = new Book(BookID, BookName, BookPrice);
                     course->addBook(book);
                     QTreeWidgetItem *bookWidget = addChild(courseWidget,BookName,BookPrice);
-                    QStringList chapterIDs = ChapterList.split(",");
-                    for(int k = 0; k < chapterIDs.size(); k++)
+                    if(ChapterList != "")
                     {
-                        QString temp = studentID;
-                        QString chapterInfos = c->sendRequest("getChapterInfoRequest|",
-                                                              temp.append("|").append(chapterIDs[k]));
-                        if(chapterInfos == "empty")
+                        QStringList chapterIDs = ChapterList.split(",");
+                        for(int k = 0; k < chapterIDs.size(); k++)
                         {
-
-                            emit sendMsg("critical", "Cannot find corresponding chapter from the chapter ID!");
-
-                        } else if(chapterInfos == "fail") {
-
-                            emit sendMsg("critical", "User haven't logged in or don't have the privilege!");
-
-                        } else {
-                            QStringList chapterInfo = chapterInfos.split("|");
-                            QString ChapterID = chapterInfo[0];
-                            QString ChapterName = chapterInfo[1];
-                            QString ChapterPrice = chapterInfo[2];
-                            QString SectionList = chapterInfo[3];
-                            Chapter *chapter = new Chapter(ChapterID, ChapterName, ChapterPrice);
-                            book->addChapter(chapter);
-                            QTreeWidgetItem *chapterWidget = addChild(bookWidget,ChapterName, ChapterPrice);
-                            QStringList sectionIDs = SectionList.split(",");
-                            for(int l = 0; l < sectionIDs.size(); l++)
+                            QString temp = studentID;
+                            QString chapterInfos = c->sendRequest("getChapterInfoRequest|",
+                                                                  temp.append("|").append(chapterIDs[k]));
+                            if(chapterInfos == "empty")
                             {
-                                QString temp = studentID;
-                                QString sectionInfos = c->sendRequest("getSectionInfoRequest|",
-                                                                      temp.append("|").append(sectionIDs[l]));
-                                if(sectionInfos == "empty")
+
+                                emit sendMsg("critical", "Cannot find corresponding chapter from the chapter ID!");
+
+                            } else if(chapterInfos == "fail") {
+
+                                emit sendMsg("critical", "User haven't logged in or don't have the privilege!");
+
+                            } else {
+                                QStringList chapterInfo = chapterInfos.split("|");
+                                QString ChapterID = chapterInfo[0];
+                                QString ChapterName = chapterInfo[1];
+                                QString ChapterPrice = chapterInfo[2];
+                                QString SectionList = chapterInfo[3];
+                                Chapter *chapter = new Chapter(ChapterID, ChapterName, ChapterPrice);
+                                book->addChapter(chapter);
+                                QTreeWidgetItem *chapterWidget = addChild(bookWidget,ChapterName, ChapterPrice);
+                                if(SectionList != "")
                                 {
+                                    QStringList sectionIDs = SectionList.split(",");
+                                    for(int l = 0; l < sectionIDs.size(); l++)
+                                    {
+                                        QString temp = studentID;
+                                        QString sectionInfos = c->sendRequest("getSectionInfoRequest|",
+                                                                              temp.append("|").append(sectionIDs[l]));
+                                        if(sectionInfos == "empty")
+                                        {
 
-                                    emit sendMsg("critical", "Cannot find corresponding section from the Section ID!");
+                                            emit sendMsg("critical", "Cannot find corresponding section from the Section ID!");
 
-                                } else if(sectionInfos == "fail") {
+                                        } else if(sectionInfos == "fail") {
 
-                                    emit sendMsg("critical", "User haven't logged in or don't have the privilege!");
+                                            emit sendMsg("critical", "User haven't logged in or don't have the privilege!");
 
-                                } else {
-                                    QStringList sectionInfo = sectionInfos.split("|");
-                                    QString SectionID = sectionInfo[0];
-                                    QString SectionName = sectionInfo[1];
-                                    QString SectionPrice = sectionInfo[2];
-                                    Section *section = new Section(SectionID, SectionName, SectionPrice);
-                                    chapter->addSection(section);
-                                    addChild(chapterWidget, SectionName, SectionPrice);
+                                        } else {
+                                            QStringList sectionInfo = sectionInfos.split("|");
+                                            QString SectionID = sectionInfo[0];
+                                            QString SectionName = sectionInfo[1];
+                                            QString SectionPrice = sectionInfo[2];
+                                            Section *section = new Section(SectionID, SectionName, SectionPrice);
+                                            chapter->addSection(section);
+                                            addChild(chapterWidget, SectionName, SectionPrice);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-
                 }
             }
 
