@@ -18,6 +18,12 @@ public:
     QString getBookFromID(QString userID, QString bookID);
     QString getChapterFromID(QString userID, QString chapterID);
     QString getSectionFromID(QString userID, QString sectionID);
+    QString getCartFromID(QString userID, QString cartID);
+    QString getCartID(QString studentID);
+    QString addBooktoCart(QString userID, QString bookID);
+    QString addChaptertoCart(QString userID ,QString chapterID);
+    QString addSectiontoCart(QString userID, QString sectionID);
+    QString setCart(QString cart);
 private:
     AccessControl& accessControl;
     dataController *datacontrol;

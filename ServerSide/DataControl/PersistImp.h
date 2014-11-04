@@ -18,6 +18,9 @@ public:
     virtual QString getBookInfoFromID(QString bookID) = 0;
     virtual QString getChapterInfoFromID(QString chapterID) = 0;
     virtual QString getSectionInfoFromID(QString sectionID) = 0;
+    virtual QString getCartInfoFromID(QString CartID) = 0;
+    virtual QString getCartID(QString studentID) = 0;
+    virtual QString setCartInfo(QString cart) = 0;
 };
 
 

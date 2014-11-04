@@ -4,8 +4,10 @@
 #include <ui_loginPage.h>
 #include <QMainWindow>
 #include <QObject>
+#include <QMessageBox>
 #include "clientconnection.h"
 #include "../Common/course.h"
+#include "../Common/cart.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,7 +27,11 @@ signals:
 
 private slots:
     void viewCourseButtonClicked();
-
+    void addCartButtonClicked();
+    void shoppingCartButtonClicked();
+    void placeOrderButtonClicked();
+    void cancelOrderButtonClicked();
+    void studentViewListChanged();
 private:
     ClientConnection *c;
     Ui::MainWindow *ui;

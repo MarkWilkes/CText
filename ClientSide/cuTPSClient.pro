@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     ../Common/book.cpp \
     ../Common/chapter.cpp \
     ../Common/section.cpp \
-    ../Common/course.cpp
+    ../Common/course.cpp \
+    ../Common/Cart.cpp
 
 FORMS += \
     loginPage.ui
@@ -44,4 +45,5 @@ HEADERS += \
     ../Common/book.h \
     ../Common/chapter.h \
     ../Common/section.h \
-    ../Common/course.h
+    ../Common/course.h \
+    ../Common/cart.h

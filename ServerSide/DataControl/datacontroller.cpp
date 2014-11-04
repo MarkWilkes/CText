@@ -136,3 +136,87 @@ QString dataController::getSectionInfoFromID(QString sectionID)
     file.close();
     return QString("");
 }
+
+QString dataController::getCartInfoFromID(QString CartID)
+{
+    QFile file("../ServerSide/Data/Cart.txt");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "error opening the cart Data" << endl;
+    }
+    while(!file.atEnd())
+    {
+        QString temp = QString(file.readLine().simplified());
+        QStringList cartInfo = temp.split("|");
+        if(CartID == cartInfo.at(0))
+        {
+            return temp;
+        }
+    }
+    file.close();
+    return QString("");
+}
+
+QString dataController::getCartID(QString studentID){
+    QFile file("../ServerSide/Data/User.txt");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug()<< "error opening the user Data"<<endl;
+    }
+    while(!file.atEnd()){
+        QString temp = QString(file.readLine().simplified());
+        QStringList studentInfo = temp.split("|");
+        if(studentID == studentInfo.at(0))
+        {
+            return studentInfo.at(4);
+        }
+    }
+    file.close();
+    return QString("");
+}
+
+QString dataController::setCartInfo(QString cart){
+
+    QStringList cartList = cart.split("|");
+
+    QFile file("../ServerSide/Data/Cart.txt");
+    if(!file.open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        qDebug()<< "error opening the Cart Data"<<endl;
+        return QString("Fail");
+    }
+    QTextStream in(&file);
+    QStringList line = QStringList();
+    while(!in.atEnd()){
+        line.append(in.readLine());
+    }
+    int replaceLine;
+    QStringList temp;
+    for(int i = 0; i < line.size(); i ++){
+        temp = line.at(i).split("|");
+        if(temp.at(0).compare(cartList.at(0)) == 0){
+            replaceLine = i;
+        }
+    }
+    file.close();
+
+    QFile ofile("../ServerSide/Data/newCart.txt");
+    if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+        qDebug()<<"error opening new cart"<<endl;
+        return QString("fail");
+    }
+    QTextStream out(&ofile);
+    for(int i = 0; i < line.size(); i++){
+        if(i == replaceLine){
+            out<<cart +"\r\n";
+        }
+        else{
+            out<<line.at(i) + "\r\n";
+        }
+    }
+    ofile.close();
+
+    file.remove();
+    ofile.rename("../ServerSide/Data/newCart.txt","../ServerSide/Data/Cart.txt");
+    return QString("success");
+}

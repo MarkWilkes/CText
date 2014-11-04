@@ -170,22 +170,158 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_5_clicked()
 {
+    clearTest();
+    QString testDescription = "This test case checks the CartID from the StudentID";
+    ui->plainTextEdit->appendPlainText(testDescription);
+    QString expectedResult = "The expected result is '1'";
+    ui->plainTextEdit_2->appendPlainText(expectedResult);
 
+    //login the system as frank
+    QString role = c->sendRequest("loginRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+
+    //get cartID from system
+    QString cartID = c->sendRequest("getCartID|","frank");
+    ui->plainTextEdit_3->appendPlainText("CartID: " + cartID);
+    if(cartID.compare("1") == 0){
+        ui->plainTextEdit_3->appendPlainText("\nTest Passed");
+    }
+    else{
+        ui->plainTextEdit_3->appendPlainText("\nTest Failed");
+    }
 }
 
 void MainWindow::on_pushButton_6_clicked()
 {
+    clearTest();
+    QString testDescription = "This test case checks the CartInfo from the CartID";
+    ui->plainTextEdit->appendPlainText(testDescription);
+    QString expectedResult = "The expected result is '1','1','2,3','1'";
+    ui->plainTextEdit_2->appendPlainText(expectedResult);
 
+    //login the system as frank
+    QString role = c->sendRequest("loginRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+
+    //get cartID from system
+    QString cartID = c->sendRequest("getCartID|","frank");
+
+    //get cartFromID from system
+
+    QString cart = c->sendRequest("getCartInfoRequest|","frank|"+cartID);
+
+    QStringList cartList = cart.split("|");
+
+    ui->plainTextEdit_3->appendPlainText("CartID:"+cartList.at(0) + "\n");
+    ui->plainTextEdit_3->appendPlainText("CartBooks"+cartList.at(1)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartChapters"+cartList.at(2)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartSections"+cartList.at(3)+"\n");
+
+    if(cartList[0].compare("1")==0
+       &&cartList[1].compare("1")==0
+       &&cartList[2].compare("2,3")==0
+       &&cartList[3].compare("1")==0){
+        ui->plainTextEdit_3->appendPlainText("\nTest Passed");
+    }
+    else{
+        ui->plainTextEdit_3->appendPlainText("\nTest Failed");
+    }
 }
 
 void MainWindow::on_pushButton_7_clicked()
 {
+    clearTest();
+    QString testDescription = "This test case empties the cart";
+    ui->plainTextEdit->appendPlainText(testDescription);
+    QString expectedResult = "The expected result is '1','','',''";
+    ui->plainTextEdit_2->appendPlainText(expectedResult);
 
+    //login the system as frank
+    QString role = c->sendRequest("loginRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+
+    //get cartID from system
+    QString cartID = c->sendRequest("getCartID|","frank");
+
+    //get cartFromID from system
+
+    QString cart = c->sendRequest("getCartInfoRequest|","frank|"+cartID);
+
+    QStringList cartList = cart.split("|");
+    ui->plainTextEdit_3->appendPlainText("Before empty\r\n");
+    ui->plainTextEdit_3->appendPlainText("CartID: "+cartList.at(0) + "\n");
+    ui->plainTextEdit_3->appendPlainText("CartBooks: "+cartList.at(1)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartChapters: "+cartList.at(2)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartSections: "+cartList.at(3)+"\n");
+
+    c->sendRequest("setCart|","1|||");
+
+    cart = c->sendRequest("getCartInfoRequest|","frank|"+cartID);
+
+    cartList = cart.split("|");
+    ui->plainTextEdit_3->appendPlainText("After empty\r\n");
+    ui->plainTextEdit_3->appendPlainText("CartID: "+cartList.at(0) + "\n");
+    ui->plainTextEdit_3->appendPlainText("CartBooks: "+cartList.at(1)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartChapters: "+cartList.at(2)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartSections: "+cartList.at(3)+"\n");
+
+    if(cartList[0].compare("1") == 0
+       &&cartList[1].isEmpty()
+       &&cartList[2].isEmpty()
+       &&cartList[3].isEmpty()){
+        ui->plainTextEdit_3->appendPlainText("\nTest Passed");
+    }
+    else{
+        ui->plainTextEdit_3->appendPlainText("\nTest Failed");
+    }
 }
 
 void MainWindow::on_pushButton_8_clicked()
 {
+    clearTest();
+    QString testDescription = "This test case fills the cart";
+    ui->plainTextEdit->appendPlainText(testDescription);
+    QString expectedResult = "The expected result is '1','1','2,3','1'";
+    ui->plainTextEdit_2->appendPlainText(expectedResult);
 
+    //login the system as frank
+    QString role = c->sendRequest("loginRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+
+    //get cartID from system
+    QString cartID = c->sendRequest("getCartID|","frank");
+
+    //get cartFromID from system
+
+    QString cart = c->sendRequest("getCartInfoRequest|","frank|"+cartID);
+
+    QStringList cartList = cart.split("|");
+    ui->plainTextEdit_3->appendPlainText("Before fill\r\n");
+    ui->plainTextEdit_3->appendPlainText("CartID: "+cartList.at(0) + "\n");
+    ui->plainTextEdit_3->appendPlainText("CartBooks: "+cartList.at(1)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartChapters: "+cartList.at(2)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartSections: "+cartList.at(3)+"\n");
+
+    c->sendRequest("setCart|","1|1|2,3|1");
+
+    cart = c->sendRequest("getCartInfoRequest|","frank|"+cartID);
+
+    cartList = cart.split("|");
+    ui->plainTextEdit_3->appendPlainText("After Fill\r\n");
+    ui->plainTextEdit_3->appendPlainText("CartID: "+cartList.at(0) + "\n");
+    ui->plainTextEdit_3->appendPlainText("CartBooks: "+cartList.at(1)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartChapters: "+cartList.at(2)+"\n");
+    ui->plainTextEdit_3->appendPlainText("CartSections: "+cartList.at(3)+"\n");
+
+    if(cartList[0].compare("1") == 0
+            &&cartList[1].compare("1")==0
+            &&cartList[2].compare("2,3")==0
+            &&cartList[3].compare("1")==0){
+        ui->plainTextEdit_3->appendPlainText("\nTest Passed");
+    }
+    else{
+        ui->plainTextEdit_3->appendPlainText("\nTest Failed");
+    }
 }
 
 void MainWindow::on_pushButton_9_clicked()

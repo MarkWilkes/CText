@@ -22,7 +22,7 @@ QString AccessControl::logIn(QString userID)
     if(datacontrol->verifyUser(userID, userName, role, coursesString)){
         if(role == QString("Student"))
         {
-            Student *temp = new Student(userID, userName);
+            Student *temp = new Student(userID, userName,datacontrol->getCartID(userID));
             loggedOnUser.insert(userID, temp);
         } else if(role == QString("ContentManager")){
             ContentManager *temp = new ContentManager(userID, userName);

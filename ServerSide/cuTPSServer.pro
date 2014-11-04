@@ -54,4 +54,5 @@ OTHER_FILES += \
     Data/Books.txt \
     Data/Chapters.txt \
     Data/Sections.txt \
-    Data/Courses.txt
+    Data/Courses.txt \
+    Data/Cart.txt

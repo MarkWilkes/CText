@@ -1,9 +1,10 @@
 #include "student.h"
 
-Student::Student(QString id, QString name) :
-    User(id,name)
+Student::Student(QString id, QString name, QString cartid) :
+    User(id,name),cartID(cartid)
 {
 }
+
 QList<Course *> Student::getCourses() const
 {
     return courses;

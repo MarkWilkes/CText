@@ -9,7 +9,7 @@ class Student : public User
     typedef QList<Student> StudentList;
 
 public:
-    Student(QString id, QString name);
+    Student(QString id, QString name, QString cartid);
     QString getUserType(){return QString("Student");}
 
     QList<Course *> getCourses() const;
@@ -18,6 +18,7 @@ public:
 
 private:
     QList<Course*> courses;
+    QString cartID;
 
 };
 

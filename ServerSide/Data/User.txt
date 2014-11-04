@@ -1,4 +1,4 @@
-UserID|UserName|UserType|RegistedCourses
-frank|dongfeng|Student|COMP3004
-uri|asdf|ContentManager
-mark|mark|Administrator
+UserID|UserName|UserType|RegistedCourses|CartID
+frank|dongfeng|Student|COMP3004,COMP3000|1
+uri|asdf|ContentManager||
+mark|mark|Administrator||
