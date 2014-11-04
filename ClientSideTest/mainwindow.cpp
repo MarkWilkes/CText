@@ -30,7 +30,8 @@ void MainWindow::on_pushButton_clicked()
 
     QString testDescription = "This test case view the course list for student 'frank'\r\n";
     ui->plainTextEdit->appendPlainText(testDescription);
-    QString expectedValue = "CourseID : COMP3004 \r\nCourseName : Object-Oriented Software Engineer";
+    QString expectedValue = QString("CourseID : COMP3004 \r\nCourseName : Object-Oriented Software Engineer\r\n")
+            .append("CourseID : COMP3000 \r\nCourseName : Operating Systems");
     ui->plainTextEdit_2->appendPlainText(expectedValue);
 
     //login the system as frank
@@ -51,13 +52,18 @@ void MainWindow::on_pushButton_clicked()
         {
             ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
         } else {
-            ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
+            if(courseID == "COMP3000" && courseName == "Operating Systems")
+            {
+                ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
+            } else {
+                ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
+            }
         }
     }
 
     //logout the system
     role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank login out the system \r\n\r\n");
+    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -93,7 +99,7 @@ void MainWindow::on_pushButton_2_clicked()
 
     //logout the system
     role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank login out the system \r\n\r\n");
+    ui->plainTextEdit_3->appendPlainText("frank logut the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -129,7 +135,7 @@ void MainWindow::on_pushButton_3_clicked()
 
     //logout the system
     role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank login out the system \r\n\r\n");
+    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -165,7 +171,7 @@ void MainWindow::on_pushButton_4_clicked()
 
     //logout the system
     role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank login out the system \r\n\r\n");
+    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -189,6 +195,10 @@ void MainWindow::on_pushButton_5_clicked()
     else{
         ui->plainTextEdit_3->appendPlainText("\nTest Failed");
     }
+
+    //logout the system
+    role = c->sendRequest("logoutRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText("frank logut the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_6_clicked()
@@ -226,6 +236,10 @@ void MainWindow::on_pushButton_6_clicked()
     else{
         ui->plainTextEdit_3->appendPlainText("\nTest Failed");
     }
+
+    //logout the system
+    role = c->sendRequest("logoutRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText("frank logut the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_7_clicked()
@@ -274,6 +288,10 @@ void MainWindow::on_pushButton_7_clicked()
     else{
         ui->plainTextEdit_3->appendPlainText("\nTest Failed");
     }
+
+    //logout the system
+    role = c->sendRequest("logoutRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText("frank logut the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_8_clicked()
@@ -322,14 +340,56 @@ void MainWindow::on_pushButton_8_clicked()
     else{
         ui->plainTextEdit_3->appendPlainText("\nTest Failed");
     }
+
+    //logout the system
+    role = c->sendRequest("logoutRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText("frank logut the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_9_clicked()
 {
+    clearTest();
 
+    QString testDescription = "This test case check the login function of the system, login as 'frank'\r\n";
+    ui->plainTextEdit->appendPlainText(testDescription);
+    QString expectedValue = QString("Success message for login, and the role for user");
+    ui->plainTextEdit_2->appendPlainText(expectedValue);
+
+    //login the system as frank
+    QString role = c->sendRequest("loginRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system");
+    if(role == "Student")
+    {
+        ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
+    } else {
+        ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
+    }
+
+    //logout the system
+    role = c->sendRequest("logoutRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_10_clicked()
 {
+    clearTest();
 
+    QString testDescription = "This test case check the logout function of the system\r\n";
+    ui->plainTextEdit->appendPlainText(testDescription);
+    QString expectedValue = QString("Success message for logout");
+    ui->plainTextEdit_2->appendPlainText(expectedValue);
+
+    //login the system as frank
+    QString role = c->sendRequest("loginRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+
+    //logout the system
+    role = c->sendRequest("logoutRequest|", "frank");
+    ui->plainTextEdit_3->appendPlainText("frank logout the system");
+    if(role == "true")
+    {
+        ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
+    } else {
+        ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
+    }
 }

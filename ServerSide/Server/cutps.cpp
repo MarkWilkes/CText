@@ -61,35 +61,46 @@ QString cuTPS::serveRequest(QString index, QString data)
         QStringList info = data.split("|");
         qDebug() <<  info[0] + " " + info[1] << endl;
         return getSectionFromID(info[0],info[1]);
+
     }else if(index.compare("getCartInfoRequest") == 0){
 
         qDebug() << "get Cart Information request being processed" << endl;
         QStringList info = data.split("|");
         qDebug() << info[0] + " " +info[1] << endl;
         return getCartFromID(info[0], info[1]);
+
     }else if(index.compare("getCartID") == 0){
 
         qDebug() << "get Cart ID request being processed" << endl;
         return getCartID(data);
+
     }else if(index.compare("addBooktoCart") == 0){
+
         qDebug()<<"addBooktoCart request is being processed" << endl;
         QStringList info = data.split("|");
         qDebug() <<  info[0] + " " + info[1] << endl;
         return addBooktoCart(info[0],info[1]);
+
     }else if(index.compare("addChaptertoCart") == 0){
+
         qDebug()<<"addChaptertoCart request is being processed" << endl;
         QStringList info = data.split("|");
         qDebug() <<  info[0] + " " + info[1] << endl;
         return addChaptertoCart(info[0],info[1]);
+
     }else if(index.compare("addSectiontoCart") == 0){
+
         qDebug()<<"addSectiontoCart request is being processed" << endl;
         QStringList info = data.split("|");
         qDebug() <<  info[0] + " " + info[1] << endl;
         return addSectiontoCart(info[0],info[1]);
+
     }else if(index.compare("setCart") == 0){
+
         qDebug() << "setCart request is being processed" << endl;
         qDebug() << data << endl;
         return setCart(data);
+
     }
 }
 
