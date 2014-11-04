@@ -220,3 +220,115 @@ QString dataController::setCartInfo(QString cart){
     ofile.rename("../ServerSide/Data/newCart.txt","../ServerSide/Data/Cart.txt");
     return QString("success");
 }
+
+QString dataController::getNewID(QString contentType){
+
+    QString reply, temp;
+
+    if(contentType.compare("Book")==0){
+
+        QFile file("../ServerSide/Data/Books.txt");
+        if(!file.open(QIODevice::ReadOnly))
+        {
+            qDebug() << "error opening the Book data" << endl;
+        }
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            if(temp != "")
+            {
+                reply = temp.split("|").at(0);
+            }
+        }
+        file.close();
+        int num = reply.toInt();
+        num++;
+        reply = QString::number(num);
+        return(reply);
+
+    }else if(contentType.compare("Chapter")==0){
+        QFile file("../ServerSide/Data/Chapters.txt");
+        if(!file.open(QIODevice::ReadOnly))
+        {
+            qDebug() << "error opening the Chapter data" << endl;
+        }
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            if(temp != "")
+            {
+                reply = temp.split("|").at(0);
+            }
+        }
+        file.close();
+        int num = reply.toInt();
+        num++;
+        reply = QString::number(num);
+        return(reply);
+
+    }else if(contentType.compare("Section")==0){
+        QFile file("../ServerSide/Data/Sections.txt");
+        if(!file.open(QIODevice::ReadOnly))
+        {
+            qDebug() << "error opening the Section data" << endl;
+        }
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            if(temp != "")
+            {
+                reply = temp.split("|").at(0);
+            }
+        }
+        file.close();
+        int num = reply.toInt();
+        num++;
+        reply = QString::number(num);
+        return(reply);
+
+    }else{        
+        qDebug() << "bad data type" << endl;
+        return("fail");
+    }
+}
+
+QString dataController::addBook(QString bookInfo) {
+    QFile file("../ServerSide/Data/Books.txt");
+    if(!file.open(QIODevice::Append))
+    {
+        qDebug() << "error opening the Book data" << endl;
+    }
+
+    QTextStream outstream(&file);
+    outstream<<bookInfo;
+
+    file.close();
+    return("yay");
+}
+
+QString dataController::addChapter(QString chapterInfo) {
+    QFile file("../ServerSide/Data/Chapters.txt");
+    if(!file.open(QIODevice::Append))
+    {
+        qDebug() << "error opening the Chapter data" << endl;
+    }
+
+    QTextStream outstream(&file);
+    outstream<<chapterInfo;
+
+    file.close();
+    return("yay");
+}
+
+QString dataController::addSection(QString sectionInfo) {
+    QFile file("../ServerSide/Data/Sections.txt");
+    if(!file.open(QIODevice::Append))
+    {
+        qDebug() << "error opening the Section data" << endl;
+    }
+
+    QTextStream outstream(&file);
+    outstream<<sectionInfo;
+
+    file.close();
+    return("yay");
+}
+
+

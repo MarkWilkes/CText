@@ -10,6 +10,7 @@
 #include "clientconnection.h"
 #include "logincontroller.h"
 #include "studentcontroller.h"
+#include "cmcontroller.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +32,7 @@ private:
     ClientConnection *c;
     LoginController *logincontrol;
     StudentController *studentControl;
+    CmController *cmControl;
     QString userIDString;
 };
 

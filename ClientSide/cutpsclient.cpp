@@ -14,11 +14,16 @@ cuTPSClient::cuTPSClient(QWidget *parent) :
             this,SLOT(getLoginState(QString,QString)));
     connect(logincontrol, SIGNAL(sendLogoutState(QString)),
             this, SLOT(getLogoutState(QString)));
+
     //initial the student controller
     studentControl = new StudentController(this, c, ui);
     connect(studentControl, SIGNAL(sendMsg(QString,QString)),
             this,SLOT(getStudentMsg(QString,QString)));
 
+    //initialize content manager controller
+    cmControl = new CmController(this, c, ui);
+    connect(cmControl, SIGNAL(sendMsg(QString,QString)),
+            this,SLOT(getStudentMsg(QString,QString)));
 }
 
 cuTPSClient::~cuTPSClient()
@@ -27,27 +32,41 @@ cuTPSClient::~cuTPSClient()
     delete c;
     delete logincontrol;
     delete studentControl;
+    delete cmControl;
 }
 
 void cuTPSClient::getLoginState(QString role, QString userID)
 {
     if(role.compare("Student") == 0){
+
         QMessageBox::information(this, tr("cuTPS"),tr("Student Login"));
         studentControl->initialize(userID);
+
     }else if(role.compare("ContentManager") == 0){
+
         QMessageBox::information(this, tr("cuTPS"),tr("Content Manager Login"));
+        cmControl->initialize(userID);
+
     }else if(role.compare("Administrator") == 0){
+
         QMessageBox::information(this, tr("cuTPS"),tr("Administrator Login"));
+
     }else if(role.compare("loggedin") == 0){
+
         //just pop up the message
         QString temp = userID + " : Already logged in";
         QMessageBox::critical(this,tr("cuTPS"),temp);
+
     }else if(role.compare("fail") == 0){
+
         //just pop up the message
         QMessageBox::critical(this, tr("cuTPS"), tr("Error User, System don't have this User"));
+
     }else if(role.compare("empty") == 0){
+
         //just pop up the message
         QMessageBox::critical(this, tr("cuTPS"), tr("The username is blank! Please enter an username."));
+
     }
 }
 

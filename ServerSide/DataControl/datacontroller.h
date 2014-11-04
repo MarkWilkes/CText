@@ -18,9 +18,16 @@ public:
     QString getBookInfoFromID(QString bookID);
     QString getChapterInfoFromID(QString chapterID);
     QString getSectionInfoFromID(QString sectionID);
+
     QString getCartInfoFromID(QString CartID);
     QString getCartID(QString studentID);
     QString setCartInfo(QString cart);
+
+    QString getNewID(QString contentType);
+    QString addBook(QString bookInfo);
+    QString addChapter(QString bookIndex);
+    QString addSection(QString bookIndex);
+
 
 };
 

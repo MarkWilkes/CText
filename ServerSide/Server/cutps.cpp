@@ -101,6 +101,36 @@ QString cuTPS::serveRequest(QString index, QString data)
         qDebug() << data << endl;
         return setCart(data);
 
+    }else if(index.compare("addBookRequest")==0) {
+
+        qDebug() << "add Book request being processed" << endl;
+        QStringList info = data.split("|");
+        return addBook(info[0],info[2].append("|").append(info[3]).append("|").append(info[4]).append("|").append("\r\n"));
+
+    } else if(index.compare("addChapterRequest")==0) {
+
+        qDebug() << "add Chapter request being processed" << endl;
+        QStringList info = data.split("|");
+        return addChapter(info[0],info[2].append("|").append(info[3]).append("|").append(info[4]).append("|").append("\r\n"));
+
+
+    }else if(index.compare("addSectionRequest")==0) {
+
+        qDebug() << "add Section request being processed" << endl;
+        QStringList info = data.split("|");
+        return addSection(info[0],info[2].append("|").append(info[3]).append("|").append(info[4]).append("\r\n"));
+
+
+    }else if(index.compare("nextIDRequest")==0) {
+
+        qDebug() << "get nextID request being processed" << endl;
+        QStringList info = data.split("|");
+        qDebug() <<  info[0] + " " + info[1] << endl;
+        return getNextID(info[0],info[1]);
+
+    }else {
+
+        return ("invalid request");
     }
 }
 
@@ -124,7 +154,8 @@ QString cuTPS::getRegistedCourses(QString studentID)
 QString cuTPS::getBookFromID(QString userID, QString bookID)
 {
     if(accessControl.isLoggedIn(userID)&&
-            accessControl.getUser(userID)->getUserType() == "Student")
+            (accessControl.getUser(userID)->getUserType() == "Student" ||
+             accessControl.getUser(userID)->getUserType() == "ContentManager"))
     {
         QString result = datacontrol->getBookInfoFromID(bookID);
         if(!result.isEmpty())
@@ -141,7 +172,8 @@ QString cuTPS::getBookFromID(QString userID, QString bookID)
 QString cuTPS::getChapterFromID(QString userID, QString chapterID)
 {
     if(accessControl.isLoggedIn(userID)&&
-            accessControl.getUser(userID)->getUserType() == "Student")
+            (accessControl.getUser(userID)->getUserType() == "Student" ||
+            accessControl.getUser(userID)->getUserType() == "ContentManager"))
     {
         QString result = datacontrol->getChapterInfoFromID(chapterID);
         if(!result.isEmpty())
@@ -158,7 +190,8 @@ QString cuTPS::getChapterFromID(QString userID, QString chapterID)
 QString cuTPS::getSectionFromID(QString userID, QString sectionID)
 {
     if(accessControl.isLoggedIn(userID)&&
-            accessControl.getUser(userID)->getUserType() == "Student")
+            (accessControl.getUser(userID)->getUserType() == "Student") ||
+            accessControl.getUser(userID)->getUserType() == "ContentManager")
     {
         QString result = datacontrol->getSectionInfoFromID(sectionID);
         if(!result.isEmpty())
@@ -285,4 +318,54 @@ QString cuTPS::addSectiontoCart(QString userID, QString sectionID){
 QString cuTPS::setCart(QString cart){
     qDebug() << cart << endl;
     return datacontrol->setCartInfo(cart);
+}
+
+QString cuTPS::getNextID(QString userID, QString contentType){
+
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->getNewID(contentType);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
+
+QString cuTPS::addBook(QString userID, QString bookInfo){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->addBook(bookInfo);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
+QString cuTPS::addChapter(QString userID, QString chapterInfo){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->addChapter(chapterInfo);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
+QString cuTPS::addSection(QString userID, QString sectionInfo){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->addSection(sectionInfo);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
 }
