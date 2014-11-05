@@ -220,6 +220,9 @@ QString cuTPS::addBooktoCart(QString userID, QString bookID){
             cartList[1] = bookID;
         }
         else{
+            if(cartList[1].compare(bookID) == 0 || cartList[1].contains(bookID+",")|| cartList[1].contains(","+bookID)){
+                return "already exists";
+            }
             cartList[1].append(",").append(bookID);
         }
         cart = cartList[0];
@@ -241,6 +244,9 @@ QString cuTPS::addChaptertoCart(QString userID, QString chapterID){
             cartList[2] = chapterID;
         }
         else{
+            if(cartList[2].compare(chapterID) == 0 || cartList[2].contains(chapterID+",")|| cartList[2].contains(","+chapterID)){
+                return "already exists";
+            }
             cartList[2].append(",").append(chapterID);
         }
         cart = cartList[0];
@@ -262,6 +268,9 @@ QString cuTPS::addSectiontoCart(QString userID, QString sectionID){
             cartList[3] = sectionID;
         }
         else{
+            if(cartList[3].compare(sectionID) == 0 || cartList[3].contains(sectionID+",")|| cartList[3].contains(","+sectionID)){
+                return "already exists";
+            }
             cartList[3].append(",").append(sectionID);
         }
         cart = cartList[0];
