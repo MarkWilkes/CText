@@ -30,6 +30,9 @@ public:
     QString addBook(QString userID, QString bookInfo);
     QString addChapter(QString userID, QString chapterInfo);
     QString addSection(QString userID, QString sectionInfo);
+    QString addSubContent(QString userID, QString data);
+
+
 
 private:
     AccessControl& accessControl;

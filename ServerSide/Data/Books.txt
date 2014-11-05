@@ -3,3 +3,4 @@ BookID|BookName|Price|ChapterList
 2|bookName|3.99|5
 3|bigBook|22.99|6,7,8,9
 4|smallBook|5.99|10
+5|nook56|5.55|

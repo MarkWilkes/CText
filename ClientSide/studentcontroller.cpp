@@ -152,7 +152,10 @@ void StudentController::addCartButtonClicked(){
                     for(int k = 0; k < books.size(); k++){
                         if(books[k]->getName().compare(itemName) == 0){
                             QString temp = studentID;
-                            c->sendRequest("addBooktoCart|",temp.append("|").append(books[k]->getID()));
+                            QString response  = c->sendRequest("addBooktoCart|",temp.append("|").append(books[k]->getID()));
+                            if(response.compare("already exists") == 0){
+                                QMessageBox::information(ui->Main, tr("cuTPS"),tr("Book already in cart"));
+                            }
                             qDebug() << itemName<<endl;
                         }
                     }
@@ -175,7 +178,10 @@ void StudentController::addCartButtonClicked(){
                             for(int l = 0; l < chapters.size(); l++){
                                 if(chapters[l]->getName().compare(itemName) == 0){
                                     QString temp = studentID;
-                                    c->sendRequest("addChaptertoCart|",temp.append("|").append(chapters[l]->getID()));
+                                    QString response = c->sendRequest("addChaptertoCart|",temp.append("|").append(chapters[l]->getID()));
+                                    if(response.compare("already exists") == 0){
+                                        QMessageBox::information(ui->Main, tr("cuTPS"),tr("Chapter already in cart"));
+                                    }
                                     qDebug() << itemName<<endl;
                                 }
                             }
@@ -203,7 +209,10 @@ void StudentController::addCartButtonClicked(){
                                     for(int m = 0; m < sections.size(); m++){
                                         if(sections[m]->getName().compare(itemName) == 0){
                                             QString temp = studentID;
-                                            c->sendRequest("addSectiontoCart|",temp.append("|").append(sections[m]->getID()));
+                                            QString response = c->sendRequest("addSectiontoCart|",temp.append("|").append(sections[m]->getID()));
+                                            if(response.compare("already exists") == 0){
+                                                QMessageBox::information(ui->Main, tr("cuTPS"),tr("Section already in cart"));
+                                            }
                                             qDebug() << itemName<<endl;
                                         }
                                     }

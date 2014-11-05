@@ -27,6 +27,7 @@ public:
     QString addBook(QString bookInfo);
     QString addChapter(QString bookIndex);
     QString addSection(QString bookIndex);
+    QString addSubContent(QString data);
 
 
 };

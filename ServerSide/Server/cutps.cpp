@@ -107,7 +107,7 @@ QString cuTPS::serveRequest(QString index, QString data)
         QStringList info = data.split("|");
         return addBook(info[0],info[2].append("|").append(info[3]).append("|").append(info[4]).append("|").append("\r\n"));
 
-    } else if(index.compare("addChapterRequest")==0) {
+    }else if(index.compare("addChapterRequest")==0) {
 
         qDebug() << "add Chapter request being processed" << endl;
         QStringList info = data.split("|");
@@ -128,7 +128,13 @@ QString cuTPS::serveRequest(QString index, QString data)
         qDebug() <<  info[0] + " " + info[1] << endl;
         return getNextID(info[0],info[1]);
 
-    }else {
+    }else if(index.compare("addXtoYRequest")==0){
+        qDebug() << "get nextID request being processed" << endl;
+        QStringList info = data.split("|");
+        qDebug() <<  info[0] + " " + info[1] << endl;
+        return addSubContent(info[0],info[1]);
+
+    } else {
 
         return ("invalid request");
     }
@@ -333,7 +339,6 @@ QString cuTPS::getNextID(QString userID, QString contentType){
     }
 }
 
-
 QString cuTPS::addBook(QString userID, QString bookInfo){
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
@@ -369,3 +374,20 @@ QString cuTPS::addSection(QString userID, QString sectionInfo){
         return QString("fail");
     }
 }
+
+QString cuTPS::addSubContent(QString userID, QString data){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->addSubContent(data);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
+
+
+
+

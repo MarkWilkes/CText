@@ -27,6 +27,7 @@ public:
     virtual QString addBook(QString bookInfo) = 0;
     virtual QString addChapter(QString bookIndex) = 0;
     virtual QString addSection(QString bookIndex) = 0;
+    virtual QString addSubContent(QString data) = 0;
 };
 
 

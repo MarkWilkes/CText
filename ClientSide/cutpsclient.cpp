@@ -5,6 +5,7 @@ cuTPSClient::cuTPSClient(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->stackedWidget->setCurrentIndex(0);
     //initialize the client
     c = new ClientConnection();
 

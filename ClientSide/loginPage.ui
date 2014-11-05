@@ -300,7 +300,7 @@
        <rect>
         <x>20</x>
         <y>120</y>
-        <width>91</width>
+        <width>101</width>
         <height>271</height>
        </rect>
       </property>
@@ -416,7 +416,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="price_textbox"/>
+          <widget class="QDoubleSpinBox" name="price_input"/>
          </item>
         </layout>
        </item>

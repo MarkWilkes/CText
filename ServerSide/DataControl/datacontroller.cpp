@@ -331,4 +331,74 @@ QString dataController::addSection(QString sectionInfo) {
     return("yay");
 }
 
+QString dataController::addSubContent(QString data){
+    //Book|2|1
+    QStringList dataSplit = data.split("|");
+    QString dataType    = dataSplit[0];
+    QString dataID      = dataSplit[1];
+    QString parentID    = dataSplit[2];
+    QString temp;
+
+    QString toAdd       = ",";
+    toAdd.append(dataID);
+
+
+    if(dataType.compare("Book")==0){
+        QFile file("../ServerSide/Data/Course.txt");
+        if(!file.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "error opening the Course data" << endl;
+        }
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            QStringList parentInfo  = temp.split("|");
+            if(parentID == parentInfo .at(0))
+            {
+                //add to EoL!!!!!!
+
+            }
+        }
+
+    } else if(dataType.compare("Chapter")==0) {
+
+        QFile file("../ServerSide/Data/Books.txt");
+        if(!file.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "error opening the Book data" << endl;
+        }
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            QStringList parentInfo = temp.split("|");
+            if(parentID == parentInfo .at(0))
+            {
+                //add to EoL!!!!!!!
+            }
+        }
+
+
+    } else if (dataType.compare("Section")==0) {
+        QFile file("../ServerSide/Data/Section.txt");
+        if(!file.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "error opening the Section data" << endl;
+        }
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            QStringList parentInfo  = temp.split("|");
+            if(parentID == parentInfo .at(0))
+            {
+                //add to EoL!!!!!!
+            }
+        }
+
+    } else {
+        return("Bad Data Type");
+    }
+    return("added to parent");
+}
+
+
+
+
+
 
