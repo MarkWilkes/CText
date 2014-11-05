@@ -73,8 +73,8 @@
      <rect>
       <x>20</x>
       <y>160</y>
-      <width>77</width>
-      <height>286</height>
+      <width>94</width>
+      <height>425</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -145,6 +145,27 @@
       <widget class="QPushButton" name="pushButton_10">
        <property name="text">
         <string>Test Case 10</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_11">
+       <property name="text">
+        <string>Test Case 11</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_12">
+       <property name="text">
+        <string>Test Case 12</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_13">
+       <property name="text">
+        <string>Test Case 13</string>
        </property>
       </widget>
      </item>
