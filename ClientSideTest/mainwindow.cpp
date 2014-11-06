@@ -476,130 +476,127 @@ void MainWindow::on_pushButton_11_clicked()
 {
     clearTest();
 
-    QString testDescription = "This test case views the list of books as a content manager\r\n";
+    QString testDescription = "This test case checks the login as a content manager'uri'\r\n";
     ui->plainTextEdit->appendPlainText(testDescription);
-    QString expectedValue = QString("CourseID : COMP3004 \r\nCourseName : Object-Oriented Software Engineer\r\n")
-            .append("CourseID : COMP3000 \r\nCourseName : Operating Systems");
+    QString expectedValue = QString("Success message for login, and the role for the user");
     ui->plainTextEdit_2->appendPlainText(expectedValue);
 
-    //login the system as frank
-    QString role = c->sendRequest("loginRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
-
-    //get the Registed Course for frank
-    QString coursesNum = c->sendRequest("getRegistedCourseRequest|", "frank");
-    QStringList coursesInfo = coursesNum.split("|", QString::SkipEmptyParts);
-    int courseCount = coursesInfo.size()/3;
-    for(int i = 0; i < courseCount; i++)
+    //login to the system as uri
+    QString role = c->sendRequest("loginRequest|", "uri");
+    ui->plainTextEdit_3->appendPlainText(role + " uri logs in to the system");
+    if(role == "Content Manager")
     {
-        QString courseID = coursesInfo[i*3 + 0];
-        QString courseName = coursesInfo[i*3 + 1];
-        ui->plainTextEdit_3->appendPlainText(QString("CourseID : ").append(courseID));
-        ui->plainTextEdit_3->appendPlainText(QString("CourseName : ").append(courseName));
-        if(courseID == "COMP3004" && courseName == "Object-Oriented Software Engineer")
-        {
-            ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
-        } else {
-            if(courseID == "COMP3000" && courseName == "Operating Systems")
-            {
-                ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
-            } else {
-                ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
-            }
-        }
+        ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
+    } else {
+        ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
     }
 
-    //logout the system
-    role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
+    //logout of the system
+    role = c->sendRequest("logoutRequest|", "uri");
+    ui->plainTextEdit_3->appendPlainText("uri logs out of the system \r\n\r\n");
 }
 
 void MainWindow::on_pushButton_12_clicked()
 {
     clearTest();
 
-    QString testDescription = "This test case view the course list for student 'frank'\r\n";
+    QString testDescription = "This test case views the list of all books for content manager 'uri'\r\n";
     ui->plainTextEdit->appendPlainText(testDescription);
-    QString expectedValue = QString("CourseID : COMP3004 \r\nCourseName : Object-Oriented Software Engineer\r\n")
-            .append("CourseID : COMP3000 \r\nCourseName : Operating Systems");
+    QString expectedValue = QString("1|helloworld|10.99|1,2,3,4\r\n 2|bookName|3.99|5\r\n 3|bigBook|22.99|6,7,8,9\r\n 4|smallBook|5.99|10\r\n 5|nook56|5.55|\r\n");
     ui->plainTextEdit_2->appendPlainText(expectedValue);
 
-    //login the system as uri
-    QString role = c->sendRequest("loginRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+    //login to the system as uri
+    QString role = c->sendRequest("loginRequest|", "uri");
+    ui->plainTextEdit_3->appendPlainText(role + " uri logs in to the system \r\n");
 
-    //get the Registed Course for frank
-    QString coursesNum = c->sendRequest("getRegistedCourseRequest|", "frank");
-    QStringList coursesInfo = coursesNum.split("|", QString::SkipEmptyParts);
-    int courseCount = coursesInfo.size()/3;
-    for(int i = 0; i < courseCount; i++)
+    QString temp = "uri|";
+    //get num books
+    QString bookNumString = c->sendRequest("nextIDRequest|", temp.append("Book"));
+    int numBooks = bookNumString.toInt();
+    QString nextBook;
+    for(int j = 1; j < numBooks; j++)
     {
-        QString courseID = coursesInfo[i*3 + 0];
-        QString courseName = coursesInfo[i*3 + 1];
-        ui->plainTextEdit_3->appendPlainText(QString("CourseID : ").append(courseID));
-        ui->plainTextEdit_3->appendPlainText(QString("CourseName : ").append(courseName));
-        if(courseID == "COMP3004" && courseName == "Object-Oriented Software Engineer")
+        temp = "uri|";
+        nextBook = QString::number(j);
+        QString bookInfos = c->sendRequest("getBookInfoRequest|", temp.append(nextBook));
+        if(bookInfos == "empty")
         {
-            ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
+            continue;
+
+        } else if(bookInfos == "fail") {
+
+
+
         } else {
-            if(courseID == "COMP3000" && courseName == "Operating Systems")
-            {
-                ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
-            } else {
-                ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
-            }
+            QStringList bookInfo = bookInfos.split("|");
+            QString BookID, BookName, BookPrice, ChapterList;
+            BookID = bookInfo[0];
+            BookName = bookInfo[1];
+            BookPrice = bookInfo[2];
+            ChapterList = bookInfo[3];
+            ui->plainTextEdit_3->appendPlainText(QString("BookID : ").append(BookID));
+            ui->plainTextEdit_3->appendPlainText(QString("BookName : ").append(BookName));
+            ui->plainTextEdit_3->appendPlainText(QString("BookPrice : ").append(BookPrice));
+
         }
     }
 
+
+
     //logout the system
-    role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
+    role = c->sendRequest("logoutRequest|", "uri");
+    ui->plainTextEdit_3->appendPlainText("uri logs out of the system \r\n\r\n");
 }
+
 
 void MainWindow::on_pushButton_13_clicked()
 {
     clearTest();
 
-    QString testDescription = "This test case view the course list for student 'frank'\r\n";
+    QString testDescription = "This test case views the list of all Chapters for content manager 'uri'\r\n";
     ui->plainTextEdit->appendPlainText(testDescription);
-    QString expectedValue = QString("CourseID : COMP3004 \r\nCourseName : Object-Oriented Software Engineer\r\n")
-            .append("CourseID : COMP3000 \r\nCourseName : Operating Systems");
+    QString expectedValue = QString("1|chapter 1|2|1,2\r\n 2|chapter 2|3|3,4\r\n 3|chapter 3|2|5,6\r\n 4|chapter 4|3|7,8\r\n 5|chapter 5|2|9\r\n 6|chapter 6|4|10\r\n 7|chapter 7|1|11\r\n 8|chapter 8|1|12\r\n 9|chapter 9|3|13,14\r\n 10|chapter 10|2|15\r\n");
     ui->plainTextEdit_2->appendPlainText(expectedValue);
 
-    //login the system as frank
-    QString role = c->sendRequest("loginRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText(role + " frank login to the system \r\n");
+    //login to the system as uri
+    QString role = c->sendRequest("loginRequest|", "uri");
+    ui->plainTextEdit_3->appendPlainText(role + " uri logs in to the system \r\n");
 
-    //get the Registed Course for frank
-    QString coursesNum = c->sendRequest("getRegistedCourseRequest|", "frank");
-    QStringList coursesInfo = coursesNum.split("|", QString::SkipEmptyParts);
-    int courseCount = coursesInfo.size()/3;
-    for(int i = 0; i < courseCount; i++)
+    QString temp = "uri|";
+    //get num books
+    QString bookNumString = c->sendRequest("nextIDRequest|", temp.append("Chapter"));
+    int numBooks = bookNumString.toInt();
+    QString nextBook;
+    for(int j = 1; j < numBooks; j++)
     {
-        QString courseID = coursesInfo[i*3 + 0];
-        QString courseName = coursesInfo[i*3 + 1];
-        ui->plainTextEdit_3->appendPlainText(QString("CourseID : ").append(courseID));
-        ui->plainTextEdit_3->appendPlainText(QString("CourseName : ").append(courseName));
-        if(courseID == "COMP3004" && courseName == "Object-Oriented Software Engineer")
+        temp = "uri|";
+        nextBook = QString::number(j);
+        QString bookInfos = c->sendRequest("getChapterInfoRequest|", temp.append(nextBook));
+        if(bookInfos == "empty")
         {
-            ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
+            continue;
+
+        } else if(bookInfos == "fail") {
+
+
+
         } else {
-            if(courseID == "COMP3000" && courseName == "Operating Systems")
-            {
-                ui->plainTextEdit_3->appendPlainText("Test case passed\r\n");
-            } else {
-                ui->plainTextEdit_3->appendPlainText("Test case failed\r\n");
-            }
+            QStringList bookInfo = bookInfos.split("|");
+            QString BookID, BookName, BookPrice, ChapterList;
+            BookID = bookInfo[0];
+            BookName = bookInfo[1];
+            BookPrice = bookInfo[2];
+            ChapterList = bookInfo[3];
+            ui->plainTextEdit_3->appendPlainText(QString("ChapterID : ").append(BookID));
+            ui->plainTextEdit_3->appendPlainText(QString("ChapterName : ").append(BookName));
+            ui->plainTextEdit_3->appendPlainText(QString("ChapterPrice : ").append(BookPrice));
+
         }
     }
 
+
+
     //logout the system
-    role = c->sendRequest("logoutRequest|", "frank");
-    ui->plainTextEdit_3->appendPlainText("frank logout the system \r\n\r\n");
+    role = c->sendRequest("logoutRequest|", "uri");
+    ui->plainTextEdit_3->appendPlainText("uri logs out of the system \r\n\r\n");
 }
-
-
-
-
-
-
