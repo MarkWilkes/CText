@@ -41,6 +41,13 @@ QString cuTPS::serveRequest(QString index, QString data)
         qDebug() << "get registed courses request being processed" << endl;
         return getRegistedCourses(data);
 
+    }else if(index.compare("getCourseFromIDRequest") == 0){
+
+        qDebug() << "get course from ID request being processed" << endl;
+        QStringList info = data.split("|");
+        qDebug() <<  info[0] + " " + info[1] << endl;
+        return getCourseFromID(info[0],info[1]);
+
     }else if(index.compare("getBookInfoRequest") == 0){
 
         qDebug() << "get Book Information request being processed" << endl;
@@ -146,6 +153,23 @@ QString cuTPS::getRegistedCourses(QString studentID)
             &&accessControl.getUser(studentID)->getUserType() == "Student")
     {
         QString result = datacontrol->getRegistedCourse(studentID);
+        if(!result.isEmpty())
+        {
+            return result;
+        } else {
+            return QString("empty");
+        }
+    } else {
+        return QString("fail");
+    }
+}
+
+QString cuTPS::getCourseFromID(QString userID, QString courseID)
+{
+    if(accessControl.isLoggedIn(userID)
+            &&accessControl.getUser(userID)->getUserType() == "Student")
+    {
+        QString result = datacontrol->getCourseFromID(courseID);
         if(!result.isEmpty())
         {
             return result;

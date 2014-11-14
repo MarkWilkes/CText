@@ -3,7 +3,7 @@
 
 #include <QDebug>
 #include "accesscontrol.h"
-#include "DataControl/datacontroller.h"
+#include "DataControl/PersistImp.h"
 
 class cuTPS
 {
@@ -14,7 +14,8 @@ public:
     //API Functions
     QString serveRequest(QString index, QString data);
 
-    QString getRegistedCourses(QString studentID);
+    QString getRegistedCourses(QString studentID);                      //2014FALL,COMP3004:2015WINTER,COMP3000
+    QString getCourseFromID(QString userID, QString courseID);          //COMP3004|Object-Oriented Software Engineer|1,2,3
     QString getBookFromID(QString userID, QString bookID);
     QString getChapterFromID(QString userID, QString chapterID);
     QString getSectionFromID(QString userID, QString sectionID);
@@ -36,7 +37,7 @@ public:
 
 private:
     AccessControl& accessControl;
-    dataController *datacontrol;
+    PersistImp *datacontrol;
 };
 
 #endif // CUTPS_H

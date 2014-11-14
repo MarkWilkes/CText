@@ -39,14 +39,11 @@ bool dataController::verifyUser(QString userID, QString &userName, QString &role
 QString dataController::getRegistedCourse(QString studentID)
 {
     QFile file("../ServerSide/Data/User.txt");
-    QFile file2("../ServerSide/Data/Courses.txt");
-    if(!file.open(QIODevice::ReadOnly)||!file2.open(QIODevice::ReadOnly))
+    if(!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "error opening the data" << endl;
     }
     QString userString = QString(file.readLine());  //skip the first useless line
-    QString courseString = QString(file2.readLine());  //skip the first useless line
-    QString result;
     while(!file.atEnd())
     {
         userString = QString(file.readLine()).simplified();
@@ -55,23 +52,32 @@ QString dataController::getRegistedCourse(QString studentID)
         if(userID == studentID)
         {
             QString coursesString = userInfo[3];
-            QStringList coursesList = coursesString.split(",");
-            while(!file2.atEnd())
-            {
-                courseString = QString(file2.readLine()).simplified();
-                for(int i = 0; i < coursesList.size(); i++)
-                {
-                    if(coursesList.at(i) == courseString.split("|").at(0))
-                    {
-                        result.append(courseString).append("|");
-                    }
-                }
-            }
+            return coursesString;
         }
     }
     file.close();
-    file2.close();
-    return result;
+    return "";
+}
+
+QString dataController::getCourseFromID(QString courseID)
+{
+    QFile file("../ServerSide/Data/Courses.txt");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "error opening the data" << endl;
+    }
+    QString courseString = QString(file.readLine());  //skip the first useless line
+    while(!file.atEnd())
+    {
+        courseString = QString(file.readLine()).simplified();
+        if(courseString.split("|").at(0) == courseID)
+        {
+            return courseString;
+        }
+    }
+    file.close();
+    return "";
+
 }
 
 QString dataController::getBookInfoFromID(QString bookID)

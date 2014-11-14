@@ -1,4 +1,4 @@
 UserID|UserName|UserType|RegistedCourses|CartID
-frank|dongfeng|Student|COMP3004,COMP3000|1
+frank|dongfeng|Student|2014FALL,COMP3004:2015WINTER,COMP3000|1
 uri|asdf|ContentManager||
 mark|mark|Administrator||

@@ -15,6 +15,7 @@ public:
     //API
     bool verifyUser(QString userID, QString &userName, QString &role, QString &courses);
     QString getRegistedCourse(QString studentID);
+    QString getCourseFromID(QString courseID);
     QString getBookInfoFromID(QString bookID);
     QString getChapterInfoFromID(QString chapterID);
     QString getSectionInfoFromID(QString sectionID);
