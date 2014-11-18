@@ -2,6 +2,7 @@
 #define ACCESSCONTROL_H
 
 #include "../Common/user.h"
+#include "DataControl/PersistImp.h"
 #include "DataControl/datacontroller.h"
 
 typedef QMap<QString, User*> UserList;
@@ -23,7 +24,7 @@ public:
 
 private:
     AccessControl();
-    dataController *datacontrol;
+    PersistImp *datacontrol;
     UserList loggedOnUser;
 
 };
