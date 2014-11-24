@@ -25,8 +25,7 @@ private:
 signals:
     //Use this signal if you want to handle the connection error on the
     //GUI side.
-    void errorOccurs();
-
+    void errorOccurs(QString);
 
 };
 

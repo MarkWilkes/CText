@@ -27,6 +27,9 @@ public slots:
     void getLoginState(QString role, QString userID);
     void getStudentMsg(QString role, QString message);
     void getLogoutState(QString role);
+
+    void socketErrorSlot(QString socketError);
+
 private:
     Ui::MainWindow *ui;
     ClientConnection *c;

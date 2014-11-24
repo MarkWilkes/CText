@@ -4,10 +4,11 @@ cuTPSClient::cuTPSClient(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    ui->stackedWidget->setCurrentIndex(0);
-    //initialize the client
+    ui->setupUi(this); ui->stackedWidget->setCurrentIndex(0);
+    //initialize the  client
     c = new ClientConnection();
+    connect(c,SIGNAL(errorOccurs(QString)),
+            this,SLOT(socketErrorSlot(QString)));
 
     //initial the login controller
     logincontrol = new LoginController(this, c, ui);
@@ -74,21 +75,40 @@ void cuTPSClient::getLoginState(QString role, QString userID)
 void cuTPSClient::getStudentMsg(QString role, QString message)
 {
     if(role.compare("critical") == 0){
+
         QMessageBox::critical(this,tr("cuTPS"),message);
+
     }else if(role.compare("information") == 0){
+
         QMessageBox::information(this,tr("cuTPS"),message);
+
     }
 }
 
 void cuTPSClient::getLogoutState(QString role)
 {
     if(role == "true"){
+
         ui->stackedWidget->setCurrentIndex(0);
         QMessageBox::information(this, tr("cuTPS"),tr("Logout successfully"));
+
     } else {
+
         ui->stackedWidget->setCurrentIndex(0);
         QMessageBox::information(this, tr("cuTPS"),tr("Already Logout"));
+
     }
 }
+
+void cuTPSClient::socketErrorSlot(QString socketError)
+{
+
+    QMessageBox::information(this, tr("cuTPS"),
+                                     tr("The following error occurred: %1.")
+                                     .arg(socketError));
+
+}
+
+
 
 

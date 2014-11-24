@@ -51,6 +51,6 @@ void ClientConnection::errorReport()
      //one by one, so we will tolerate the RemoteHostClosedError
      if(tcpSocket->error() != QAbstractSocket::RemoteHostClosedError)
      {
-        emit errorOccurs();
+        emit errorOccurs(tcpSocket->errorString());
      }
 }
