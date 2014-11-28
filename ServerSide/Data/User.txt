@@ -1,4 +1,4 @@
-UserID|UserName|UserType|RegistedCourses|CartID
-frank|dongfeng|Student|2014FALL,COMP3004:2015WINTER,COMP3000|1
-uri|asdf|ContentManager||
-mark|mark|Administrator||
+UserID|UserName|UserType|RegistedCourses|CartID|EmailAddress
+frank|dongfeng|Student|2014FALL,COMP3004:2015WINTER,COMP3000|1|email@address.com
+uri|asdf|ContentManager|||email@address.ca
+mark|mark|Administrator|||email@address.org

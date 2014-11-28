@@ -19,6 +19,7 @@ public:
     QString getBookInfoFromID(QString bookID);
     QString getChapterInfoFromID(QString chapterID);
     QString getSectionInfoFromID(QString sectionID);
+    QString getEMail(QString userID);
 
     QString getCartInfoFromID(QString CartID);
     QString getCartID(QString studentID);

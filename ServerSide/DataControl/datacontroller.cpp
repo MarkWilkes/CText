@@ -143,6 +143,23 @@ QString dataController::getSectionInfoFromID(QString sectionID)
     return QString("");
 }
 
+QString dataController::getEMail(QString userID){
+    QFile file("../ServerSide/Data/User.txt");
+    if(!file.open(QIODevice::ReadOnly)){
+        qDebug() << "error opening the User data" <<endl;
+    }
+    QString temp = QString(file.readLine());
+    while(!file.atEnd()){
+        temp = QString(file.readLine().simplified());
+        QStringList userInfo = temp.split("|");
+        if(userID == userInfo.at(0)){
+            return userInfo.at(5);
+        }
+    }
+    file.close();
+    return QString("");
+}
+
 QString dataController::getCartInfoFromID(QString CartID)
 {
     QFile file("../ServerSide/Data/Cart.txt");
@@ -261,8 +278,10 @@ QString dataController::addOrder(QString studentID, QString CartID){
             totalCost = QString::number(totalCost.toFloat() + iList[2].toFloat());
         }
     }
+    QString stu = studentID;
+    QString order = stu.append("|").append(cartBooks).append("|").append(cartChapters).append("|").append(cartSections);
 
-    QString order = studentID.append("|").append(cartBooks).append("|").append(cartChapters).append("|").append(cartSections).append("|").append(totalCost).append("\n");
+    order.append("|").append(totalCost).append("|").append(getEMail(studentID)).append("\n");
 
     QFile file("../ServerSide/Data/Order.txt");
     if(!file.open(QIODevice::Append))
