@@ -174,11 +174,11 @@ void StudentController::addCartButtonClicked(){
                             QString response  = c->sendRequest("addBooktoCart|",temp.append("|").append(books[k]->getID()));
                             if(response.compare("already exists") == 0){
                                 QMessageBox::information(ui->Main, tr("cuTPS"),tr("Book already in cart"));
-                            }
-                            if(response.compare("success") == 0){
+                            }else if(response.compare("success") == 0){
                                 QMessageBox::information(ui->Main, tr("cuTPS"),tr("Book added to cart!"));
                             }
                             qDebug() << itemName<<endl;
+                            break;
                         }
                     }
                 }
@@ -204,10 +204,11 @@ void StudentController::addCartButtonClicked(){
                                     if(response.compare("already exists") == 0){
                                         QMessageBox::information(ui->Main, tr("cuTPS"),tr("Chapter already in cart"));
                                     }
-                                    else{
+                                    else if(response.compare("success") == 0){
                                         QMessageBox::information(ui->Main, tr("cuTPS"),tr("Chapter added to cart!"));
                                     }
                                     qDebug() << itemName<<endl;
+                                    break;
                                 }
                             }
                         }
@@ -238,10 +239,11 @@ void StudentController::addCartButtonClicked(){
                                             if(response.compare("already exists") == 0){
                                                 QMessageBox::information(ui->Main, tr("cuTPS"),tr("Section already in cart"));
                                             }
-                                            else{
+                                            else if(response.compare("success") == 0){
                                                 QMessageBox::information(ui->Main, tr("cuTPS"),tr("Section added to cart!"));
                                             }
                                             qDebug() << itemName<<endl;
+                                            break;
                                         }
                                     }
                                 }
