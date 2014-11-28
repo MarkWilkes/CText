@@ -23,6 +23,7 @@ public:
     QString getCartInfoFromID(QString CartID);
     QString getCartID(QString studentID);
     QString setCartInfo(QString cart);
+    QString addOrder(QString studentID, QString CartID);
 
     QString getNewID(QString contentType);
     QString addBook(QString bookInfo);

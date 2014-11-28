@@ -26,6 +26,7 @@ public:
     QString addChaptertoCart(QString userID ,QString chapterID);
     QString addSectiontoCart(QString userID, QString sectionID);
     QString setCart(QString cart);
+    QString completeCart(QString userID, QString cartID);
 
     QString getNextID(QString userID, QString contentType);
     QString addBook(QString userID, QString bookInfo);

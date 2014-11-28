@@ -23,6 +23,7 @@ public:
     virtual QString getCartInfoFromID(QString CartID) = 0;
     virtual QString getCartID(QString studentID) = 0;
     virtual QString setCartInfo(QString cart) = 0;
+    virtual QString addOrder(QString studentID, QString CartID) = 0;
 
     virtual QString getNewID(QString contentType) = 0;
     virtual QString addBook(QString bookInfo) = 0;

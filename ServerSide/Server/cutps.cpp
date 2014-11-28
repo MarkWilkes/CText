@@ -136,11 +136,18 @@ QString cuTPS::serveRequest(QString index, QString data)
         return getNextID(info[0],info[1]);
 
     }else if(index.compare("addXtoYRequest")==0){
+
         qDebug() << "get nextID request being processed" << endl;
         QStringList info = data.split("|");
         qDebug() <<  info[0] + " " + info[1] << endl;
         return addSubContent(info[0],info[1]);
+    }
+    else if(index.compare("completeCart") == 0){
 
+        qDebug()<< "completion of cart being processed" << endl;
+        QStringList info = data.split("|");
+        qDebug() << info[0] + " " + info[1] << endl;
+        return completeCart(info[0],info[1]);
     } else {
 
         return ("invalid request");
@@ -348,6 +355,11 @@ QString cuTPS::addSectiontoCart(QString userID, QString sectionID){
 QString cuTPS::setCart(QString cart){
     qDebug() << cart << endl;
     return datacontrol->setCartInfo(cart);
+}
+
+QString cuTPS::completeCart(QString userID, QString cartID){
+    datacontrol->addOrder(userID, cartID);
+    return setCart(cartID.append("|||"));
 }
 
 QString cuTPS::getNextID(QString userID, QString contentType){

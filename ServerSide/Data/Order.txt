@@ -1,0 +1,2 @@
+UserID|BookID|ChapterID|SectionID|TotalPrice
+frank|1,4,3|||39.97

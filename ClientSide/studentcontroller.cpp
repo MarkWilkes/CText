@@ -405,7 +405,7 @@ void StudentController::placeOrderButtonClicked(){
         emit sendMsg("critical", "User haven't logged in or don't have the privilage!");
     }
     else{
-        c->sendRequest("setCart|",cartID.append("|||"));
+        c->sendRequest("completeCart|",temp.append("|").append(cartID));
     }
     QMessageBox::information(ui->Main, tr("cuTPS"),tr("Order Placed"));
 }

@@ -227,6 +227,56 @@ QString dataController::setCartInfo(QString cart){
     return QString("success");
 }
 
+QString dataController::addOrder(QString studentID, QString CartID){
+    QString cartInfo = getCartInfoFromID(CartID);
+    QStringList list = cartInfo.split("|");
+    QString cartBooks = list[1];
+    QString cartChapters = list[2];
+    QString cartSections = list[3];
+    QString totalCost = "0.00";
+
+    if(!cartBooks.isEmpty()){
+        list = cartBooks.split(",");
+        for(int i = 0; i < list.size(); i++){
+            QString info = getBookInfoFromID(list[i]);
+            QStringList iList = info.split("|");
+            totalCost = QString::number(totalCost.toFloat() + iList[2].toFloat());
+        }
+    }
+
+    if(!cartChapters.isEmpty()){
+        list = cartChapters.split(",");
+        for(int i = 0; i < list.size(); i++){
+            QString info = getChapterInfoFromID(list[i]);
+            QStringList iList = info.split("|");
+            totalCost = QString::number(totalCost.toFloat() + iList[2].toFloat());
+        }
+    }
+
+    if(!cartSections.isEmpty()){
+        list = cartSections.split(",");
+        for(int i = 0; i < list.size(); i++){
+            QString info = getSectionInfoFromID(list[i]);
+            QStringList iList = info.split("|");
+            totalCost = QString::number(totalCost.toFloat() + iList[2].toFloat());
+        }
+    }
+
+    QString order = studentID.append("|").append(cartBooks).append("|").append(cartChapters).append("|").append(cartSections).append("|").append(totalCost).append("\n");
+
+    QFile file("../ServerSide/Data/Order.txt");
+    if(!file.open(QIODevice::Append))
+    {
+        qDebug() << "error opening the Order data" << endl;
+    }
+
+    QTextStream outstream(&file);
+    outstream<<order;
+
+    file.close();
+    return("yay");
+}
+
 QString dataController::getNewID(QString contentType){
 
     QString reply, temp;
