@@ -32,6 +32,7 @@ private slots:
     void placeOrderButtonClicked();
     void cancelOrderButtonClicked();
     void studentViewListChanged();
+    QString stringAdd(QString,QString);
 
 private:
     ClientConnection *c;

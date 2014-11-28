@@ -175,6 +175,9 @@ void StudentController::addCartButtonClicked(){
                             if(response.compare("already exists") == 0){
                                 QMessageBox::information(ui->Main, tr("cuTPS"),tr("Book already in cart"));
                             }
+                            if(response.compare("success") == 0){
+                                QMessageBox::information(ui->Main, tr("cuTPS"),tr("Book added to cart!"));
+                            }
                             qDebug() << itemName<<endl;
                         }
                     }
@@ -200,6 +203,9 @@ void StudentController::addCartButtonClicked(){
                                     QString response = c->sendRequest("addChaptertoCart|",temp.append("|").append(chapters[l]->getID()));
                                     if(response.compare("already exists") == 0){
                                         QMessageBox::information(ui->Main, tr("cuTPS"),tr("Chapter already in cart"));
+                                    }
+                                    else{
+                                        QMessageBox::information(ui->Main, tr("cuTPS"),tr("Chapter added to cart!"));
                                     }
                                     qDebug() << itemName<<endl;
                                 }
@@ -231,6 +237,9 @@ void StudentController::addCartButtonClicked(){
                                             QString response = c->sendRequest("addSectiontoCart|",temp.append("|").append(sections[m]->getID()));
                                             if(response.compare("already exists") == 0){
                                                 QMessageBox::information(ui->Main, tr("cuTPS"),tr("Section already in cart"));
+                                            }
+                                            else{
+                                                QMessageBox::information(ui->Main, tr("cuTPS"),tr("Section added to cart!"));
                                             }
                                             qDebug() << itemName<<endl;
                                         }
@@ -280,6 +289,12 @@ void StudentController::shoppingCartButtonClicked(){
             QString CartChapters = cartInfos[2];
             QString CartSections = cartInfos[3];
             Cart * cart = new Cart(CartID);
+            QString totalPrice = "0.0";
+
+            if(CartBooks.isEmpty() && CartChapters.isEmpty() && CartSections.isEmpty()){
+                ui->cancelOrder_button->setEnabled(false);
+                ui->placeOrder_button->setEnabled(false);
+            }
 
             if(!CartBooks.isEmpty()){
                 QStringList bookList = CartBooks.split(",");
@@ -304,6 +319,8 @@ void StudentController::shoppingCartButtonClicked(){
                         ChapterList = bookInfo[3];
                         Book *book = new Book(BookID, BookName, BookPrice);
                         cart->addBook(book);
+
+                        totalPrice = stringAdd(totalPrice,BookPrice);
 
                         addRoot(BookName, BookPrice);
                     }
@@ -334,6 +351,8 @@ void StudentController::shoppingCartButtonClicked(){
                         Chapter *chapter = new Chapter(ChapterID, ChapterName, ChapterPrice);
                         cart->addChapter(chapter);
 
+                        totalPrice = stringAdd(totalPrice,ChapterPrice);
+
                         addRoot(ChapterName, ChapterPrice);
                     }
                 }
@@ -362,10 +381,13 @@ void StudentController::shoppingCartButtonClicked(){
                         Section *section = new Section(sectionID, sectionName, sectionPrice);
                         cart->addSection(section);
 
+                        totalPrice = stringAdd(totalPrice,sectionPrice);
+
                         addRoot(sectionName, sectionPrice);
                     }
                 }
             }
+            addRoot("TOTAL",totalPrice);
         }
     }
 }
@@ -412,7 +434,7 @@ void StudentController::studentViewListChanged(){
     }
     QList<QTreeWidgetItem *> items = ui->studentViewList->selectedItems();
     for(int i = 0; i < items.size(); i++){
-        if(items[i]->parent() == 0){
+        if(items[i]->parent() == 0 || items[i]->parent()->parent() == 0){
             ui->addItem_button->setEnabled(false);
         }
         else{
@@ -436,4 +458,9 @@ QTreeWidgetItem* StudentController::addChild(QTreeWidgetItem *parent, QString na
     item->setText(1,price);
     parent->addChild(item);
     return item;
+}
+
+QString StudentController::stringAdd(QString first, QString second){
+    float val = first.toFloat() + second.toFloat();
+    return QString::number(val);
 }
