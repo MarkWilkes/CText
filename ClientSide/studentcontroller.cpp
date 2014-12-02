@@ -409,7 +409,11 @@ void StudentController::placeOrderButtonClicked(){
     else{
         c->sendRequest("completeCart|",temp.append("|").append(cartID));
     }
-    QMessageBox::information(ui->Main, tr("cuTPS"),tr("Order Placed"));
+    QString email = c->sendRequest("getEMail|",studentID);
+    QString str = QString("Order Placed! Check your the email of ");
+    str.append(email);
+
+    QMessageBox::information(ui->Main, tr("cuTPS"),str);
 }
 
 void StudentController::cancelOrderButtonClicked(){

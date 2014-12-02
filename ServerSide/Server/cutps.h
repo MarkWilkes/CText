@@ -28,6 +28,7 @@ public:
     QString setCart(QString cart);
     QString completeCart(QString userID, QString cartID);
 
+    QString getEmail(QString userID);
     QString getNextID(QString userID, QString contentType);
     QString addBook(QString userID, QString bookInfo);
     QString addChapter(QString userID, QString chapterInfo);

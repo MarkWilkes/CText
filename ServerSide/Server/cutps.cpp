@@ -148,8 +148,12 @@ QString cuTPS::serveRequest(QString index, QString data)
         QStringList info = data.split("|");
         qDebug() << info[0] + " " + info[1] << endl;
         return completeCart(info[0],info[1]);
-    } else {
+    }
+    else if(index.compare("getEMail") == 0){
 
+        qDebug() << "get Email of student user" << endl;
+        return getEmail(data);
+    } else {
         return ("invalid request");
     }
 }
@@ -423,7 +427,13 @@ QString cuTPS::addSubContent(QString userID, QString data){
     }
 }
 
-
+QString cuTPS::getEmail(QString userID){
+    if(accessControl.isLoggedIn(userID) &&
+            accessControl.getUser(userID)->getUserType() == "Student"){
+        QString result = datacontrol->getEMail(userID);
+        return result;
+    }
+}
 
 
 
