@@ -1,3 +1,4 @@
 UserID|BookID|ChapterID|SectionID|TotalPrice|UserEmail
 frank|4|||5.99|email@address.com
 frank|1|||10.99|email@address.com
+frank|4|10||7.99|email@address.com
