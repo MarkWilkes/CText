@@ -28,7 +28,7 @@ void StudentController::viewCourseButtonClicked()
     if(termsNCourses == "empty")
     {
 
-        emit sendMsg("critical", "Student don't have registed course!");
+        //emit sendMsg("critical", "Student don't have registed course!");
 
     } else if(termsNCourses == "fail") {
 
@@ -44,11 +44,11 @@ void StudentController::viewCourseButtonClicked()
         for(int i = 0; i < terms.size(); i++)
         {
             QStringList term = terms[i].split(",");
-            QString termName = term.at(0);
+            QString termName = term.at(0);            
+            QTreeWidgetItem *termWidget = addRoot(termName, "");
             for(int courseNum = 1; courseNum < term.size(); courseNum++)
             {
                 //set the term value to the widgets
-                QTreeWidgetItem *termWidget = addRoot(termName, "");
                 QString courseID = term.at(courseNum);
                 QString temp = studentID;
                 QString courseInfo = c->sendRequest("getCourseFromIDRequest|",temp.append("|").append(courseID));
@@ -71,7 +71,7 @@ void StudentController::viewCourseButtonClicked()
                     if(bookInfos == "empty")
                     {
 
-                        emit sendMsg("critical", "Cannot find corresponding book from the Book ID!");
+                        //emit sendMsg("critical", "Cannot find corresponding book from the Book ID!");
 
                     } else if(bookInfos == "fail") {
 
@@ -96,7 +96,7 @@ void StudentController::viewCourseButtonClicked()
                             if(chapterInfos == "empty")
                             {
 
-                                emit sendMsg("critical", "Cannot find corresponding chapter from the chapter ID!");
+                               // emit sendMsg("critical", "Cannot find corresponding chapter from the chapter ID!");
 
                             } else if(chapterInfos == "fail") {
 
@@ -120,7 +120,7 @@ void StudentController::viewCourseButtonClicked()
                                     if(sectionInfos == "empty")
                                     {
 
-                                        emit sendMsg("critical", "Cannot find corresponding section from the Section ID!");
+                                       // emit sendMsg("critical", "Cannot find corresponding section from the Section ID!");
 
                                     } else if(sectionInfos == "fail") {
 
