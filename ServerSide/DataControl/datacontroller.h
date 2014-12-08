@@ -39,6 +39,7 @@ public:
     QString editCourse(QString content);
     QString deleteCourse(QString content);
     void removeSubContent(QString data);
+    void removeCourseFromStudents(QString course);
 
 };
 

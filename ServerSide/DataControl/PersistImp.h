@@ -38,6 +38,7 @@ public:
     virtual QString editCourse(QString content)=0;
     virtual QString deleteCourse(QString content)=0;
     virtual void removeSubContent(QString data)=0;
+    virtual void removeCourseFromStudents(QString course)=0;
 };
 
 

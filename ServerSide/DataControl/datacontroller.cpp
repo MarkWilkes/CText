@@ -19,7 +19,7 @@ bool dataController::verifyUser(QString userID, QString &userName, QString &role
         QStringList infoUserSplit = temp.split("|");
         QString data_userID = infoUserSplit[0];
         if(userID == data_userID)
-        {
+        {            
             userName = infoUserSplit[1];
             role = infoUserSplit[2];
             role = role.simplified();
@@ -358,7 +358,7 @@ QString dataController::getNewID(QString contentType){
         reply = QString::number(num);
         return(reply);
 
-    }else{
+    }else{        
         qDebug() << "bad data type" << endl;
         return("fail");
     }
@@ -774,7 +774,7 @@ QString dataController::deleteContent(QString content){
             {
                 lines.append(temp);
             } else {
-                if(!parentInfo.at(2).isEmpty()){
+                if(!parentInfo.at(3).isEmpty()){
 
                     QStringList subContent = parentInfo[3].split(",");
                     for(int i = 0; i<subContent.size(); i++){
@@ -825,7 +825,7 @@ QString dataController::deleteContent(QString content){
             {
                 lines.append(temp);
             }else {
-                if(!parentInfo.at(2).isEmpty()){
+                if(!parentInfo.at(3).isEmpty()){
 
                     QStringList subContent = parentInfo[3].split(",");
                     for(int i = 0; i<subContent.size(); i++){
@@ -1004,7 +1004,7 @@ QString dataController::deleteCourse(QString course){
 
     file.remove();
     ofile.rename("../ServerSide/Data/newCourses.txt","../ServerSide/Data/Courses.txt");
-
+    removeCourseFromStudents(cID);
     return QString("file removed");
 }
 
@@ -1161,4 +1161,38 @@ void dataController::removeSubContent(QString data){
         ofile.rename("../ServerSide/Data/newChapters.txt","../ServerSide/Data/Chapters.txt");
     }
 
+}
+
+void dataController::removeCourseFromStudents(QString course){
+    QString temp;
+
+    QFile file("../ServerSide/Data/User.txt");
+    if(!file.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "error opening the User data" << endl;
+    }
+
+    QStringList lines = QStringList(); //temp list of whole file
+    lines.append(file.readLine());
+
+    while (!file.atEnd()){
+        temp = file.readLine();
+        temp = temp.remove(QString(",").append(course));
+        lines.append(temp);
+    }
+
+    file.close();
+    QFile ofile("../ServerSide/Data/newUser.txt");
+    if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+        qDebug()<<"error opening new user file"<<endl;
+
+    }
+    QTextStream outstream(&ofile);
+    for(int i = 0; i < lines.size(); i++){
+        outstream<<lines.at(i);
+    }
+    ofile.close();
+
+    file.remove();
+    ofile.rename("../ServerSide/Data/newUser.txt","../ServerSide/Data/User.txt");
 }
