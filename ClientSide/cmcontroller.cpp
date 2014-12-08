@@ -375,19 +375,56 @@ void CmController::viewCourseButtonClicked(){
 }
 
 void CmController::addCourseButtonClicked(){
-
+    ui->stackedWidget->setCurrentIndex(5);
 }
 
 void CmController::editCourseButtonClicked(){
+    //make sure something is selected
+        if (ui->CmViewList_2->selectedItems().isEmpty()) {
+            //no items selected, go away
+        } else {
+            //get info for item
+            QList<QTreeWidgetItem *> items = ui->CmViewList_2->selectedItems();
+            QString itemID, itemTitle;
+            for(int i = 0; i < items.size(); i++)
+            {
+                if(items[i]->parent() == 0)
+                {
+                    itemID = items[i]->text(0);
+                    itemTitle = items[i]->text(1);
+                }
+            }
 
+            //set up and go to edit page
+            ui->stackedWidget->setCurrentIndex(4);
+            ui->courseEditID_label->setText(itemID);
+            ui->courseOldTitle_label->setText(itemTitle);
+        }
 }
 
 void CmController::addCourseSubmitButtonClicked(){
+        ui->error_label_2->setText("");
+       QString courseID, courseTitle;
 
+       if (ui->addCourseID_textbox->text().isEmpty() || ui->addCourseTitle_textbox->text().isEmpty()){
+           ui->error_label_2->setText("Fill in ID/Title fields");
+
+       } else {
+           courseID = ui->addCourseID_textbox->text();
+           courseTitle = ui->addCourseTitle_textbox->text();
+           c->sendRequest("addCourseRequest|",courseID.append("|").append(courseTitle).append("|"));
+
+           addCourseCancelButtonClicked();
+           viewCourseButtonClicked();
+       }
 }
 
 void CmController::addCourseCancelButtonClicked(){
 
+    ui->addCourseID_textbox->clear();
+    ui->addCourseTitle_textbox->clear();
+    ui->error_label_2->setText("");
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
 void CmController::editCourseSubmitButtonClicked(){
@@ -399,7 +436,8 @@ void CmController::editCourseDeleteButtonClicked(){
 }
 
 void CmController::editCourseCancelButtonClicked(){
-
+    ui->newCourseTitle_textbox->clear();
+       ui->stackedWidget->setCurrentIndex(2);
 }
 
 QTreeWidgetItem *CmController::addCourse(QString courseID, QString courseName)
