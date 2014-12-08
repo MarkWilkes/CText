@@ -296,6 +296,12 @@ void CmController::editContentButtonClicked() {
             }
         }
 
+        ui->newTitle_textbox->clear();
+        ui->newTitle_textbox->setText(itemTitle);
+
+        ui->newPrice_input->clear();
+        ui->newPrice_input->setValue(itemPrice.toDouble());
+
         //set up and go to edit page
         ui->stackedWidget->setCurrentIndex(4);
         ui->editID_label->setText(itemID);
@@ -394,6 +400,9 @@ void CmController::editCourseButtonClicked(){
                     itemTitle = items[i]->text(1);
                 }
             }
+
+            ui->newCourseTitle_textbox->clear();
+            ui->newCourseTitle_textbox->setText(itemTitle);
 
             //set up and go to edit page
             ui->stackedWidget->setCurrentIndex(6);

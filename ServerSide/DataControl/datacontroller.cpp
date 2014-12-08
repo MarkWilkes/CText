@@ -738,7 +738,7 @@ QString dataController::editContent(QString content){
               return("Bad Data Type");
           }
 
-          return("item deleted");
+          return("item changed");
 }
 
 QString dataController::deleteContent(QString content){
@@ -941,6 +941,7 @@ QString dataController::editCourse(QString content){
 
     file.remove();
     ofile.rename("../ServerSide/Data/newCourses.txt","../ServerSide/Data/Courses.txt");
+    return QString("success");
 }
 
 QString dataController::deleteCourse(QString course){

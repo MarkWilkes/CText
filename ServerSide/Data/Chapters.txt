@@ -1,9 +1,10 @@
 ChapterID|ChapterName|Price|SectionList
-1|chapter 1|2|1,2
+1|chapter 1|2.00|1,2
 2|chapter 2|3|3,4
 3|chapter 3|2|5,6
 4|chapter 4|3|7,8
 5|chapter 5|2|
+6|chapter 6|3|
 7|chapter 7|1|11
 8|chapter 8|1|12
 9|chapter 9|3|13,14
