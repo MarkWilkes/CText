@@ -749,7 +749,6 @@ QString dataController::deleteContent(QString content){
 
     QString temp;
 
-    removeSubContent(content);
 
         //----delete Book----
     if(dataType.compare("Book")==0) {
@@ -770,7 +769,7 @@ QString dataController::deleteContent(QString content){
             temp = QString(file.readLine());
             QStringList parentInfo  = temp.split("|");
 
-            if(dataID != parentInfo.at(0))
+            if(dataID.compare(parentInfo.at(0)) != 0)
             {
                 lines.append(temp);
             }
@@ -876,6 +875,7 @@ QString dataController::deleteContent(QString content){
         return("Bad Data Type");
     }
 
+    removeSubContent(content);
     return("item deleted");
 }
 
@@ -988,7 +988,7 @@ QString dataController::deleteCourse(QString course){
     return QString("file removed");
 }
 
-QString dataController::removeSubContent(QString data){
+void dataController::removeSubContent(QString data){
     //type|id
     QStringList dataSplit = data.split("|");
     QString dataType    = dataSplit[0];
@@ -1033,7 +1033,6 @@ QString dataController::removeSubContent(QString data){
         QFile ofile("../ServerSide/Data/newCourses.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new courses"<<endl;
-            return QString("fail");
         }
         QTextStream outstream(&ofile);
         for(int i = 0; i < lines.size(); i++){
@@ -1082,7 +1081,6 @@ QString dataController::removeSubContent(QString data){
         QFile ofile("../ServerSide/Data/newBooks.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new Books"<<endl;
-            return QString("fail to open books");
         }
         QTextStream outstream(&ofile);
         for(int i = 0; i < lines.size(); i++){
@@ -1129,7 +1127,6 @@ QString dataController::removeSubContent(QString data){
         QFile ofile("../ServerSide/Data/newChapters.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new Chapters"<<endl;
-            return QString("fail to open chapters");
         }
         QTextStream outstream(&ofile);
         for(int i = 0; i < lines.size(); i++){
@@ -1139,8 +1136,5 @@ QString dataController::removeSubContent(QString data){
 
         file.remove();
         ofile.rename("../ServerSide/Data/newChapters.txt","../ServerSide/Data/Chapters.txt");
-    } else {
-        return("bad data type");
     }
-
 }
