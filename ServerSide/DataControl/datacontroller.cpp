@@ -765,7 +765,7 @@ QString dataController::deleteContent(QString content){
 
         QStringList lines = QStringList(); //temp list of whole file
         lines.append(file.readLine());
-
+        QStringList tempBookInfo;
         while (!file.atEnd()){
             temp = QString(file.readLine());
             QStringList parentInfo  = temp.split("|");
@@ -773,21 +773,15 @@ QString dataController::deleteContent(QString content){
             if(dataID != parentInfo.at(0))
             {
                 lines.append(temp);
-            } else {
-                if(!parentInfo.at(3).isEmpty()){
-
-                    QStringList subContent = parentInfo[3].split(",");
-                    for(int i = 0; i<subContent.size(); i++){
-                        subContent[i] = subContent[i].simplified();
-                        QString toDelete = "Chapter|"+subContent[i];
-                        deleteContent(toDelete);
-                    }
-                }
+            } else {                
+                tempBookInfo = parentInfo;
             }
 
         }
 
-        file.close();
+        file.close();        
+        file.remove();
+
         QFile ofile("../ServerSide/Data/newBooks.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new books"<<endl;
@@ -798,11 +792,17 @@ QString dataController::deleteContent(QString content){
             outstream<<lines.at(i);
         }
         ofile.close();
-
-        file.remove();
         ofile.rename("../ServerSide/Data/newBooks.txt","../ServerSide/Data/Books.txt");
 
+        if(!tempBookInfo.isEmpty() && !tempBookInfo.at(3).isEmpty()){
 
+            QStringList subContent = tempBookInfo[3].split(",");
+            for(int i = 0; i<subContent.size(); i++){
+                subContent[i] = subContent[i].simplified();
+                QString toDelete = "Chapter|"+subContent[i];
+                deleteContent(toDelete);
+            }
+        }
         //----delete Chapter----
     } else if (dataType.compare("Chapter")==0) {
         QFile file("../ServerSide/Data/Chapters.txt");
@@ -816,7 +816,7 @@ QString dataController::deleteContent(QString content){
 
         QStringList lines = QStringList(); //temp list of whole file
         lines.append(file.readLine());
-
+        QStringList tempChapterInfo;
         while (!file.atEnd()){
             temp = QString(file.readLine());
             QStringList parentInfo  = temp.split("|");
@@ -825,15 +825,7 @@ QString dataController::deleteContent(QString content){
             {
                 lines.append(temp);
             }else {
-                if(!parentInfo.at(3).isEmpty()){
-
-                    QStringList subContent = parentInfo[3].split(",");
-                    for(int i = 0; i<subContent.size(); i++){
-                        subContent[i] = subContent[i].simplified();
-                        QString toDelete = QString("Section|").append(subContent[i]);
-                        deleteContent(toDelete);
-                    }
-                }
+                tempChapterInfo = parentInfo;
             }
         }
 
@@ -852,6 +844,15 @@ QString dataController::deleteContent(QString content){
         file.remove();
         ofile.rename("../ServerSide/Data/newChapters.txt","../ServerSide/Data/Chapters.txt");
 
+        if(!tempChapterInfo.isEmpty() && !tempChapterInfo.at(3).isEmpty()){
+
+            QStringList subContent = tempChapterInfo[3].split(",");
+            for(int i = 0; i<subContent.size(); i++){
+                subContent[i] = subContent[i].simplified();
+                QString toDelete = QString("Section|").append(subContent[i]);
+                deleteContent(toDelete);
+            }
+        }
 
         //----delete Section ----
     } else if (dataType.compare("Section")==0) {
