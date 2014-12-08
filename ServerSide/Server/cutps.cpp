@@ -108,6 +108,12 @@ QString cuTPS::serveRequest(QString index, QString data)
         qDebug() << data << endl;
         return setCart(data);
 
+    }else if(index.compare("addCourseRequest")==0){
+
+        qDebug() << "add Course request being processed" << endl;
+        QStringList info = data.split("|");
+        return addCourse(info[0],info[1].append("|").append(info[2]).append("\r\n"));
+
     }else if(index.compare("addBookRequest")==0) {
 
         qDebug() << "add Book request being processed" << endl;
@@ -137,23 +143,44 @@ QString cuTPS::serveRequest(QString index, QString data)
 
     }else if(index.compare("addXtoYRequest")==0){
 
-        qDebug() << "get nextID request being processed" << endl;
+        qDebug() << "addXtoY request being processed" << endl;
         QStringList info = data.split("|");
-        qDebug() <<  info[0] + " " + info[1] << endl;
-        return addSubContent(info[0],info[1]);
-    }
-    else if(index.compare("completeCart") == 0){
+        QString temp = info[1];
+        temp.append("|").append(info[2]).append("|").append(info[3]);
+        qDebug() <<  info[0] + " " + temp << endl;
+        return addSubContent(info[0],temp);
+    }else if(index.compare("completeCart") == 0){
 
         qDebug()<< "completion of cart being processed" << endl;
         QStringList info = data.split("|");
         qDebug() << info[0] + " " + info[1] << endl;
         return completeCart(info[0],info[1]);
-    }
-    else if(index.compare("getEMail") == 0){
+    }else if(index.compare("getEMail") == 0){
 
         qDebug() << "get Email of student user" << endl;
         return getEmail(data);
-    } else {
+    }else if(index.compare("editContent") == 0){
+        //uri|type|id|newName|newPrice
+
+        qDebug() << "addXtoY request being processed" << endl;
+        QStringList info = data.split("|");
+        QString temp = info[1];
+        temp.append("|").append(info[2]).append("|").append(info[3]).append("|").append(info[4]);
+        qDebug() <<  info[0] + " " + temp << endl;
+
+        return editContent(info[0],temp);
+
+    }else if(index.compare("deleteContent")==0){
+        //uri|type|id
+        qDebug() << "addXtoY request being processed" << endl;
+        QStringList info = data.split("|");
+        QString temp = info[1];
+        temp.append("|").append(info[2]);
+        qDebug() <<  info[0] + " " + temp << endl;
+
+        return deleteContent(info[0],temp);
+
+    }else {
         return ("invalid request");
     }
 }
@@ -379,6 +406,18 @@ QString cuTPS::getNextID(QString userID, QString contentType){
     }
 }
 
+QString cuTPS::addCourse(QString userID, QString courseInfo){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->addCourse(courseInfo);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
 QString cuTPS::addBook(QString userID, QString bookInfo){
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
@@ -436,4 +475,26 @@ QString cuTPS::getEmail(QString userID){
 }
 
 
+QString cuTPS::editContent(QString userID, QString data){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
+        QString result = datacontrol->editContent(data);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
+QString cuTPS::deleteContent(QString userID, QString data){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->deleteContent(data);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}

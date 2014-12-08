@@ -27,10 +27,15 @@ public:
     QString addOrder(QString studentID, QString CartID);
 
     QString getNewID(QString contentType);
+
+    QString addCourse(QString courseInfo);
     QString addBook(QString bookInfo);
+
     QString addChapter(QString bookIndex);
     QString addSection(QString bookIndex);
     QString addSubContent(QString data);
+    QString editContent(QString content);
+    QString deleteContent(QString content);
 
 
 };

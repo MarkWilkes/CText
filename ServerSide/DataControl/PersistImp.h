@@ -27,10 +27,14 @@ public:
     virtual QString addOrder(QString studentID, QString CartID) = 0;
 
     virtual QString getNewID(QString contentType) = 0;
+    virtual QString addCourse(QString courseInfo) = 0;
     virtual QString addBook(QString bookInfo) = 0;
     virtual QString addChapter(QString bookIndex) = 0;
     virtual QString addSection(QString bookIndex) = 0;
     virtual QString addSubContent(QString data) = 0;
+    virtual QString editContent(QString content) = 0;
+    virtual QString deleteContent(QString content) = 0;
+
 };
 
 

@@ -19,6 +19,8 @@ public:
     QString getBookFromID(QString userID, QString bookID);
     QString getChapterFromID(QString userID, QString chapterID);
     QString getSectionFromID(QString userID, QString sectionID);
+    QString getEmail(QString userID);
+    QString getNextID(QString userID, QString contentType);
 
     QString getCartFromID(QString userID, QString cartID);
     QString getCartID(QString studentID);
@@ -28,13 +30,13 @@ public:
     QString setCart(QString cart);
     QString completeCart(QString userID, QString cartID);
 
-    QString getEmail(QString userID);
-    QString getNextID(QString userID, QString contentType);
+    QString addCourse(QString userID, QString bookInfo);
     QString addBook(QString userID, QString bookInfo);
     QString addChapter(QString userID, QString chapterInfo);
     QString addSection(QString userID, QString sectionInfo);
     QString addSubContent(QString userID, QString data);
-
+    QString editContent(QString userID, QString data);
+    QString deleteContent(QString userID, QString data);
 
 
 private:

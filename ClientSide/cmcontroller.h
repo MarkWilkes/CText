@@ -28,9 +28,12 @@ private slots:
     void viewContentButtonClicked();
     void addContentButtonClicked();
     void editContentButtonClicked();
-
+    void CMViewListChanged();
     void submitButtonClicked();
     void cancelButtonClicked();
+    void editSubmitButtonClicked();
+    void editCancelButtonClicked();
+    void editDeleteButtonClicked();
 
 private:
     ClientConnection *c;
@@ -38,8 +41,8 @@ private:
     QString userID;
 
     //function for the QTreeWidget
-    QTreeWidgetItem* addRoot(QString name, QString price);
-    QTreeWidgetItem *addChild(QTreeWidgetItem *parent, QString name, QString price);
+    QTreeWidgetItem* addRoot(QString ID, QString name, QString price);
+    QTreeWidgetItem *addChild(QTreeWidgetItem *parent, QString ID, QString name, QString price);
 };
 
 

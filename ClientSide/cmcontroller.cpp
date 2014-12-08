@@ -10,10 +10,16 @@ CmController::CmController(QObject *parent, ClientConnection *cClient, Ui::MainW
     connect(ui->viewContent_button, SIGNAL(clicked()), this, SLOT(viewContentButtonClicked()));
     connect(ui->addContent_button, SIGNAL(clicked()), this, SLOT(addContentButtonClicked()));
     connect(ui->editContent_button, SIGNAL(clicked()), this, SLOT(editContentButtonClicked()));
+    connect(ui->CmViewList, SIGNAL(itemSelectionChanged()),this, SLOT(CMViewListChanged()));
 
     //addContent page
     connect(ui->submit_button, SIGNAL(clicked()), this, SLOT(submitButtonClicked()));
     connect(ui->cancel_button, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
+
+    //editContent page
+    connect(ui->editSubmit_button, SIGNAL(clicked()), this, SLOT(editSubmitButtonClicked()));
+    connect(ui->editCancel_button, SIGNAL(clicked()), this, SLOT(editCancelButtonClicked()));
+    connect(ui->editDelete_button, SIGNAL(clicked()), this, SLOT(editDeleteButtonClicked()));
 }
 
 void CmController::initialize(QString uID)
@@ -54,7 +60,7 @@ void CmController::viewContentButtonClicked() {
             BookPrice = bookInfo[2];
             ChapterList = bookInfo[3];
             Book *book = new Book(BookID, BookName, BookPrice);
-            QTreeWidgetItem *bookWidget = addRoot(BookName,BookPrice);
+            QTreeWidgetItem *bookWidget = addRoot(BookID,BookName,BookPrice);
             QStringList chapterIDs = ChapterList.split(",");
             for(int k = 0; k < chapterIDs.size(); k++)
             {
@@ -77,7 +83,7 @@ void CmController::viewContentButtonClicked() {
                     QString SectionList = chapterInfo[3];
                     Chapter *chapter = new Chapter(ChapterID, ChapterName, ChapterPrice);
                     book->addChapter(chapter);
-                    QTreeWidgetItem *chapterWidget = addChild(bookWidget,ChapterName, ChapterPrice);
+                    QTreeWidgetItem *chapterWidget = addChild(bookWidget,ChapterID,ChapterName, ChapterPrice);
                     QStringList sectionIDs = SectionList.split(",");
                     for(int l = 0; l < sectionIDs.size(); l++)
                     {
@@ -100,7 +106,7 @@ void CmController::viewContentButtonClicked() {
                             QString SectionPrice = sectionInfo[2];
                             Section *section = new Section(SectionID, SectionName, SectionPrice);
                             chapter->addSection(section);
-                            addChild(chapterWidget, SectionName, SectionPrice);
+                            addChild(chapterWidget, SectionID, SectionName, SectionPrice);
                         }
                     }
                 }
@@ -114,23 +120,21 @@ void CmController::addContentButtonClicked() {
     ui->stackedWidget->setCurrentIndex(3);
 }
 
-void CmController::editContentButtonClicked() {
-
-}
-
-QTreeWidgetItem* CmController::addRoot(QString name, QString price)
+QTreeWidgetItem* CmController::addRoot(QString ID, QString name, QString price)
 {
     QTreeWidgetItem *item = new QTreeWidgetItem(ui->CmViewList);
-    item->setText(0,name);
-    item->setText(1,price);
+    item->setText(0,ID);
+    item->setText(1,name);
+    item->setText(2,price);
     return item;
 }
 
-QTreeWidgetItem* CmController::addChild(QTreeWidgetItem *parent, QString name, QString price)
+QTreeWidgetItem* CmController::addChild(QTreeWidgetItem *parent,QString ID, QString name, QString price)
 {
     QTreeWidgetItem *item = new QTreeWidgetItem();
-    item->setText(0,name);
-    item->setText(1,price);
+    item->setText(0,ID);
+    item->setText(1,name);
+    item->setText(2,price);
     parent->addChild(item);
     return item;
 }
@@ -152,8 +156,9 @@ void CmController::submitButtonClicked() {
         QString bookInfo = "";
 
         //get book info
-        QString bookID, bookTitle, bookPrice;
+        QString bookID, bookTitle, bookPrice, x;
         bookID = c->sendRequest("nextIDRequest|", temp.append("|").append("Book"));
+        x = bookID;
         bookTitle = ui->title_textbox->text();
         bookPrice = ui->price_input->text();
 
@@ -167,7 +172,7 @@ void CmController::submitButtonClicked() {
         if (!ui->owner_textbox->text().isEmpty()){
             temp = userID;
             QString ownerID = ui->owner_textbox->text();
-            c->sendRequest("addXtoYRequest|", temp.append("|").append("Book|").append(bookID).append("|").append(ownerID));
+            c->sendRequest("addXtoYRequest|", temp.append("|").append("Book|").append(x).append("|").append(ownerID));
         }
 
     //---ADD CHAPTER---
@@ -175,8 +180,9 @@ void CmController::submitButtonClicked() {
         QString chapterInfo = "";
 
         //get chapter info
-        QString chapterID, chapterTitle, chapterPrice;
+        QString chapterID, chapterTitle, chapterPrice,y;
         chapterID = c->sendRequest("nextIDRequest|", temp.append("|").append("Chapter"));
+        y = chapterID;
         chapterTitle = ui->title_textbox->text();
         chapterPrice = ui->price_input->text();
 
@@ -190,7 +196,7 @@ void CmController::submitButtonClicked() {
         if (!ui->owner_textbox->text().isEmpty()){
             temp = userID;
             QString ownerID = ui->owner_textbox->text();
-            c->sendRequest("addXtoYRequest|", temp.append("|").append("Chapter|").append(chapterID).append("|").append(ownerID));
+            c->sendRequest("addXtoYRequest|", temp.append("|").append("Chapter|").append(y).append("|").append(ownerID));
         }
 
     //---ADD SECTION---
@@ -198,8 +204,9 @@ void CmController::submitButtonClicked() {
         QString sectionInfo = "";
 
         //get chapter info
-        QString sectionID, sectionTitle, sectionPrice;
+        QString sectionID, sectionTitle, sectionPrice, z;
         sectionID = c->sendRequest("nextIDRequest|", temp.append("|").append("Section"));
+        z = sectionID;
         sectionTitle = ui->title_textbox->text();
         sectionPrice = ui->price_input->text();
 
@@ -213,7 +220,7 @@ void CmController::submitButtonClicked() {
         if (!ui->owner_textbox->text().isEmpty()){
             temp = userID;
             QString ownerID = ui->owner_textbox->text();
-            c->sendRequest("addXtoYRequest|", temp.append("|").append("Section|").append(sectionID).append("|").append(ownerID));
+            c->sendRequest("addXtoYRequest|", temp.append("|").append("Section|").append(z).append("|").append(ownerID));
         }
 
     }
@@ -233,4 +240,96 @@ void CmController::cancelButtonClicked() {
 
 }
 
+void CmController::editContentButtonClicked() {
 
+    //make sure something is selected
+    if (ui->CmViewList->selectedItems().isEmpty()) {
+        //no items selected, go away
+    } else {
+        //get info for item
+        QList<QTreeWidgetItem *> items = ui->CmViewList->selectedItems();
+        QString itemType, itemID, itemTitle, itemPrice;
+
+        for(int i = 0; i < items.size(); i++)
+        {
+            if(items[i]->parent() == 0)
+            {
+                //this is a book
+                itemID = items[i]->text(0);
+                itemTitle = items[i]->text(1);
+                itemPrice = items[i]->text(2);
+                itemType = "Book";
+                continue;
+            }
+            if(items[i]->parent()->parent() == 0)
+            {
+                //this is a chapter
+                itemID = items[i]->text(0);
+                itemTitle = items[i]->text(1);
+                itemPrice = items[i]->text(2);
+                itemType = "Chapter";
+                continue;
+            }
+            if(items[i]->parent()->parent()->parent() == 0)
+            {
+                //this is a section
+                itemID = items[i]->text(0);
+                itemTitle = items[i]->text(1);
+                itemPrice = items[i]->text(2);
+                itemType = "Section";
+                continue;
+            }
+        }
+
+        //set up and go to edit page
+        ui->stackedWidget->setCurrentIndex(4);
+        ui->editID_label->setText(itemID);
+        ui->oldTitle_label->setText(itemTitle);
+        ui->oldPrice_label->setText(itemPrice);        
+        ui->label_8->setText(itemType);
+    }
+
+}
+
+void CmController::CMViewListChanged()
+{
+    QList<QTreeWidgetItem *> items = ui->CmViewList->selectedItems();
+    for(int i = 0; i < items.size(); i++){
+        ui->editContent_button->setEnabled(true);
+    }
+}
+
+void CmController::editSubmitButtonClicked() {
+    QString temp = userID;
+    QString type, ID, newName, newPrice;
+    type      = ui->label_8->text();
+    ID        = ui->editID_label->text();
+    newName   = ui->newTitle_textbox->text();
+    newPrice  = ui->newPrice_input->text();
+
+    //deleteContent|uri|Book|1|newtitle|newprice
+    c->sendRequest("deleteContent|", temp.append("|").append(type).append("|").append(ID).append("|").append(newName).append("|").append(newPrice));
+
+    viewContentButtonClicked();
+    editCancelButtonClicked();
+}
+
+void CmController::editDeleteButtonClicked() {
+    QString temp = userID;
+    QString type, ID;
+    ID      = ui->editID_label->text();
+    type    = ui->label_8->text();
+    //deleteContent|uri|Book|1
+    c->sendRequest("deleteContent|", temp.append("|").append(type).append("|").append(ID));
+
+    viewContentButtonClicked();
+    editCancelButtonClicked();
+}
+
+void CmController::editCancelButtonClicked() {
+
+    //clear and return
+    ui->newTitle_textbox->clear();
+    ui->newPrice_input->clear();
+    ui->stackedWidget->setCurrentIndex(2);
+}
