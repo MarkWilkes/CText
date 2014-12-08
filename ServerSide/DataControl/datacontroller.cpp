@@ -786,7 +786,7 @@ QString dataController::deleteContent(QString content){
             }
 
         }
-        file.flush();
+
         file.close();
         QFile ofile("../ServerSide/Data/newBooks.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
@@ -797,12 +797,12 @@ QString dataController::deleteContent(QString content){
         for(int i = 0; i < lines.size(); i++){
             outstream<<lines.at(i);
         }
-        ofile.flush();
         ofile.close();
-
 
         file.remove();
         ofile.rename("../ServerSide/Data/newBooks.txt","../ServerSide/Data/Books.txt");
+
+
         //----delete Chapter----
     } else if (dataType.compare("Chapter")==0) {
         QFile file("../ServerSide/Data/Chapters.txt");
@@ -836,7 +836,7 @@ QString dataController::deleteContent(QString content){
                 }
             }
         }
-        file.flush();
+
         file.close();
         QFile ofile("../ServerSide/Data/newChapters.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
@@ -847,13 +847,10 @@ QString dataController::deleteContent(QString content){
         for(int i = 0; i < lines.size(); i++){
             outstream<<lines.at(i);
         }
-
-        ofile.flush();
-        ofile.close();        
+        ofile.close();
 
         file.remove();
         ofile.rename("../ServerSide/Data/newChapters.txt","../ServerSide/Data/Chapters.txt");
-
 
 
         //----delete Section ----
@@ -879,7 +876,7 @@ QString dataController::deleteContent(QString content){
                 lines.append(temp);
             }
         }
-        file.flush();
+
         file.close();
         QFile ofile("../ServerSide/Data/newSections.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
@@ -890,8 +887,6 @@ QString dataController::deleteContent(QString content){
         for(int i = 0; i < lines.size(); i++){
             outstream<<lines.at(i);
         }
-
-        ofile.flush();
         ofile.close();
 
         file.remove();
