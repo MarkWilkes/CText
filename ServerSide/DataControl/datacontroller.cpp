@@ -19,7 +19,7 @@ bool dataController::verifyUser(QString userID, QString &userName, QString &role
         QStringList infoUserSplit = temp.split("|");
         QString data_userID = infoUserSplit[0];
         if(userID == data_userID)
-        {            
+        {
             userName = infoUserSplit[1];
             role = infoUserSplit[2];
             role = role.simplified();
@@ -358,7 +358,7 @@ QString dataController::getNewID(QString contentType){
         reply = QString::number(num);
         return(reply);
 
-    }else{        
+    }else{
         qDebug() << "bad data type" << endl;
         return("fail");
     }
@@ -750,6 +750,7 @@ QString dataController::deleteContent(QString content){
     QString temp;
 
 
+
         //----delete Book----
     if(dataType.compare("Book")==0) {
 
@@ -769,9 +770,19 @@ QString dataController::deleteContent(QString content){
             temp = QString(file.readLine());
             QStringList parentInfo  = temp.split("|");
 
-            if(dataID.compare(parentInfo.at(0)) != 0)
+            if(dataID != parentInfo.at(0))
             {
                 lines.append(temp);
+            } else {
+                if(!parentInfo.at(2).isEmpty()){
+
+                    QStringList subContent = parentInfo[3].split(",");
+                    for(int i = 0; i<subContent.size(); i++){
+                        subContent[i] = subContent[i].simplified();
+                        QString toDelete = "Chapter|"+subContent[i];
+                        deleteContent(toDelete);
+                    }
+                }
             }
 
         }
@@ -813,6 +824,16 @@ QString dataController::deleteContent(QString content){
             if(dataID != parentInfo.at(0))
             {
                 lines.append(temp);
+            }else {
+                if(!parentInfo.at(2).isEmpty()){
+
+                    QStringList subContent = parentInfo[3].split(",");
+                    for(int i = 0; i<subContent.size(); i++){
+                        subContent[i] = subContent[i].simplified();
+                        QString toDelete = QString("Section|").append(subContent[i]);
+                        deleteContent(toDelete);
+                    }
+                }
             }
         }
 
@@ -874,7 +895,6 @@ QString dataController::deleteContent(QString content){
     } else {
         return("Bad Data Type");
     }
-
     removeSubContent(content);
     return("item deleted");
 }
@@ -1033,6 +1053,7 @@ void dataController::removeSubContent(QString data){
         QFile ofile("../ServerSide/Data/newCourses.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new courses"<<endl;
+
         }
         QTextStream outstream(&ofile);
         for(int i = 0; i < lines.size(); i++){
@@ -1081,6 +1102,7 @@ void dataController::removeSubContent(QString data){
         QFile ofile("../ServerSide/Data/newBooks.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new Books"<<endl;
+
         }
         QTextStream outstream(&ofile);
         for(int i = 0; i < lines.size(); i++){
@@ -1127,6 +1149,7 @@ void dataController::removeSubContent(QString data){
         QFile ofile("../ServerSide/Data/newChapters.txt");
         if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
             qDebug()<<"error opening new Chapters"<<endl;
+
         }
         QTextStream outstream(&ofile);
         for(int i = 0; i < lines.size(); i++){
@@ -1137,4 +1160,5 @@ void dataController::removeSubContent(QString data){
         file.remove();
         ofile.rename("../ServerSide/Data/newChapters.txt","../ServerSide/Data/Chapters.txt");
     }
+
 }
