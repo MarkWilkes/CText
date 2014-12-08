@@ -38,7 +38,7 @@ public:
     QString deleteContent(QString content);
     QString editCourse(QString content);
     QString deleteCourse(QString content);
-
+    QString removeSubContent(QString data);
 
 };
 

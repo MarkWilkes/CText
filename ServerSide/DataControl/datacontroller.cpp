@@ -749,7 +749,7 @@ QString dataController::deleteContent(QString content){
 
     QString temp;
 
-
+    removeSubContent(content);
 
         //----delete Book----
     if(dataType.compare("Book")==0) {
@@ -984,4 +984,163 @@ QString dataController::deleteCourse(QString course){
 
     file.remove();
     ofile.rename("../ServerSide/Data/newCourses.txt","../ServerSide/Data/Courses.txt");
+
+    return QString("file removed");
+}
+
+QString dataController::removeSubContent(QString data){
+    //type|id
+    QStringList dataSplit = data.split("|");
+    QString dataType    = dataSplit[0];
+    QString dataID      = dataSplit[1];
+    QString temp, inLine;
+
+    //----remove Book from Course----
+    if(dataType.compare("Book")==0){
+        QFile file("../ServerSide/Data/Courses.txt");
+
+
+        if(!file.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "error opening the Course data" << endl;
+        }
+
+        QStringList lines = QStringList(); //temp list of whole file
+        lines.append(file.readLine());
+
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            QStringList currentInfo = temp.split("|");
+            QStringList subContent;
+            QStringList tempSub;
+            if(!currentInfo[2].isEmpty())
+            {
+                subContent = currentInfo[2].split(",");
+            }
+            for (int i = 0; i < subContent.size(); i++){
+                subContent[i] = subContent[i].simplified();
+                if(subContent[i] != dataID){
+                    tempSub.append(subContent[i]);
+                }
+            }
+
+            inLine = currentInfo[0].append("|").append(currentInfo[1]).append("|").append(tempSub.join(",").append("\r\n"));
+            lines.append(inLine);
+
+        }
+
+        file.close();
+        QFile ofile("../ServerSide/Data/newCourses.txt");
+        if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+            qDebug()<<"error opening new courses"<<endl;
+            return QString("fail");
+        }
+        QTextStream outstream(&ofile);
+        for(int i = 0; i < lines.size(); i++){
+            outstream<<lines.at(i);
+        }
+        ofile.close();
+
+        file.remove();
+        ofile.rename("../ServerSide/Data/newCourses.txt","../ServerSide/Data/Courses.txt");
+
+
+    } else if (dataType.compare("Chapter")==0){
+        QFile file("../ServerSide/Data/Books.txt");
+
+
+        if(!file.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "error opening the Book data" << endl;
+        }
+
+        QStringList lines = QStringList(); //temp list of whole file
+        lines.append(file.readLine());
+
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            QStringList currentInfo = temp.split("|");
+            QStringList subContent;
+            QStringList tempSub;
+            if(!currentInfo[3].isEmpty())
+            {
+                subContent = currentInfo[3].split(",");
+            }
+            for (int i = 0; i < subContent.size(); i++){
+                subContent[i] = subContent[i].simplified();
+                if(subContent[i] != dataID){
+                    tempSub.append(subContent[i]);
+                }
+            }
+
+            inLine = currentInfo[0].append("|").append(currentInfo[1]).append("|").append(currentInfo[2]).append("|").append(tempSub.join(",").append("\r\n"));
+            lines.append(inLine);
+
+        }
+
+        file.close();
+        QFile ofile("../ServerSide/Data/newBooks.txt");
+        if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+            qDebug()<<"error opening new Books"<<endl;
+            return QString("fail to open books");
+        }
+        QTextStream outstream(&ofile);
+        for(int i = 0; i < lines.size(); i++){
+            outstream<<lines.at(i);
+        }
+        ofile.close();
+
+        file.remove();
+        ofile.rename("../ServerSide/Data/newBooks.txt","../ServerSide/Data/Books.txt");
+    } else if (dataType.compare("Section")==0){
+        QFile file("../ServerSide/Data/Chapters.txt");
+
+
+        if(!file.open(QIODevice::ReadWrite))
+        {
+            qDebug() << "error opening the Chapter data" << endl;
+        }
+
+        QStringList lines = QStringList(); //temp list of whole file
+        lines.append(file.readLine());
+
+        while (!file.atEnd()){
+            temp = QString(file.readLine());
+            QStringList currentInfo = temp.split("|");
+            QStringList subContent;
+            QStringList tempSub;
+            if(!currentInfo[3].isEmpty())
+            {
+                subContent = currentInfo[3].split(",");
+            }
+            for (int i = 0; i < subContent.size(); i++){
+                subContent[i] = subContent[i].simplified();
+                if(subContent[i] != dataID){
+                    tempSub.append(subContent[i]);
+                }
+            }
+
+            inLine = currentInfo[0].append("|").append(currentInfo[1]).append("|").append(currentInfo[2]).append("|").append(tempSub.join(",").append("\r\n"));
+            lines.append(inLine);
+
+        }
+
+        file.close();
+        QFile ofile("../ServerSide/Data/newChapters.txt");
+        if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+            qDebug()<<"error opening new Chapters"<<endl;
+            return QString("fail to open chapters");
+        }
+        QTextStream outstream(&ofile);
+        for(int i = 0; i < lines.size(); i++){
+            outstream<<lines.at(i);
+        }
+        ofile.close();
+
+        file.remove();
+        ofile.rename("../ServerSide/Data/newChapters.txt","../ServerSide/Data/Chapters.txt");
+    } else {
+        return("bad data type");
+    }
+
 }

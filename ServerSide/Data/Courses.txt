@@ -1,4 +1,3 @@
-CourseID|CourseName|BookList
-COMP3004|test course 1|1,2,3
-COMP3000|test course 2|4
-COMP3005|test course 3|
+CourseID|CourseName|BookList
+COMP3004|test course 1|1,2,3
+COMP3000|test course 2|4

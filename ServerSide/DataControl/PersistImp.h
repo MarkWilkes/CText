@@ -37,7 +37,7 @@ public:
     virtual QString getAllCourse() = 0;
     virtual QString editCourse(QString content)=0;
     virtual QString deleteCourse(QString content)=0;
-
+    virtual QString removeSubContent(QString data)=0;
 };
 
 
