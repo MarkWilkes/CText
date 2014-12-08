@@ -112,7 +112,9 @@ QString cuTPS::serveRequest(QString index, QString data)
 
         qDebug() << "add Course request being processed" << endl;
         QStringList info = data.split("|");
-        return addCourse(info[0],info[1].append("|").append(info[2]).append("\r\n"));
+        QString temp = info[1].append("|").append(info[2]).append("|").append("\r\n");
+        qDebug() <<  info[0] + " " + temp << endl;
+        return addCourse(info[0], temp);
 
     }else if(index.compare("addBookRequest")==0) {
 
@@ -162,7 +164,7 @@ QString cuTPS::serveRequest(QString index, QString data)
     }else if(index.compare("editContent") == 0){
         //uri|type|id|newName|newPrice
 
-        qDebug() << "addXtoY request being processed" << endl;
+        qDebug() << "edit content request being processed" << endl;
         QStringList info = data.split("|");
         QString temp = info[1];
         temp.append("|").append(info[2]).append("|").append(info[3]).append("|").append(info[4]);
@@ -172,7 +174,7 @@ QString cuTPS::serveRequest(QString index, QString data)
 
     }else if(index.compare("deleteContent")==0){
         //uri|type|id
-        qDebug() << "addXtoY request being processed" << endl;
+        qDebug() << "delete content request being processed" << endl;
         QStringList info = data.split("|");
         QString temp = info[1];
         temp.append("|").append(info[2]);
@@ -186,13 +188,28 @@ QString cuTPS::serveRequest(QString index, QString data)
         qDebug() << data << endl;
         return getAllCourse(data);
 
+    }else if(index.compare("editCourseRequest") ==0){
+        //uri|id|newtitle
+        qDebug() << "edit course request being processed" << endl;
+        QStringList info = data.split("|");
+        QString temp = info[1].append("|").append(info[2]);
+        qDebug() <<  info[0] + " " + temp << endl;
+
+        return editCourse(info[0],temp);
+
+    }else if(index.compare("deleteCourseRequest") ==0){
+        //uri|id
+        qDebug() << "delete course request being processed" << endl;
+        QStringList info = data.split("|");
+        qDebug() <<  info[0] + " " + info[1] << endl;
+
+        return deleteCourse(info[0],info[1]);
     }else {
         return ("invalid request");
     }
 }
 
-QString cuTPS::getRegistedCourses(QString studentID)
-{
+QString cuTPS::getRegistedCourses(QString studentID){
     if(accessControl.isLoggedIn(studentID)
             &&accessControl.getUser(studentID)->getUserType() == "Student")
     {
@@ -208,8 +225,7 @@ QString cuTPS::getRegistedCourses(QString studentID)
     }
 }
 
-QString cuTPS::getCourseFromID(QString userID, QString courseID)
-{
+QString cuTPS::getCourseFromID(QString userID, QString courseID){
     if(accessControl.isLoggedIn(userID)
             &&accessControl.getUser(userID)->getUserType() == "Student")
     {
@@ -225,8 +241,7 @@ QString cuTPS::getCourseFromID(QString userID, QString courseID)
     }
 }
 
-QString cuTPS::getBookFromID(QString userID, QString bookID)
-{
+QString cuTPS::getBookFromID(QString userID, QString bookID){
     if(accessControl.isLoggedIn(userID)&&
             (accessControl.getUser(userID)->getUserType() == "Student" ||
              accessControl.getUser(userID)->getUserType() == "ContentManager"))
@@ -243,8 +258,7 @@ QString cuTPS::getBookFromID(QString userID, QString bookID)
     }
 }
 
-QString cuTPS::getChapterFromID(QString userID, QString chapterID)
-{
+QString cuTPS::getChapterFromID(QString userID, QString chapterID){
     if(accessControl.isLoggedIn(userID)&&
             (accessControl.getUser(userID)->getUserType() == "Student" ||
             accessControl.getUser(userID)->getUserType() == "ContentManager"))
@@ -261,8 +275,7 @@ QString cuTPS::getChapterFromID(QString userID, QString chapterID)
     }
 }
 
-QString cuTPS::getSectionFromID(QString userID, QString sectionID)
-{
+QString cuTPS::getSectionFromID(QString userID, QString sectionID){
     if(accessControl.isLoggedIn(userID)&&
             (accessControl.getUser(userID)->getUserType() == "Student") ||
             accessControl.getUser(userID)->getUserType() == "ContentManager")
@@ -279,8 +292,7 @@ QString cuTPS::getSectionFromID(QString userID, QString sectionID)
     }
 }
 
-QString cuTPS::getCartFromID(QString userID,QString cartID)
-{
+QString cuTPS::getCartFromID(QString userID,QString cartID){
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType()=="Student")
     {
@@ -300,7 +312,8 @@ QString cuTPS::getCartFromID(QString userID,QString cartID)
     }
 }
 
-QString cuTPS::getCartID(QString studentID){
+QString cuTPS::getCartID(QString studentID)
+{
 
     if(accessControl.isLoggedIn(studentID)
             &&accessControl.getUser(studentID)->getUserType() == "Student")
@@ -317,7 +330,8 @@ QString cuTPS::getCartID(QString studentID){
     }
 }
 
-QString cuTPS::addBooktoCart(QString userID, QString bookID){
+QString cuTPS::addBooktoCart(QString userID, QString bookID)
+{
     if(accessControl.isLoggedIn(userID)
             &&accessControl.getUser(userID)->getUserType() == "Student")
     {
@@ -341,7 +355,8 @@ QString cuTPS::addBooktoCart(QString userID, QString bookID){
     return QString("fail");
 }
 
-QString cuTPS::addChaptertoCart(QString userID, QString chapterID){
+QString cuTPS::addChaptertoCart(QString userID, QString chapterID)
+{
     if(accessControl.isLoggedIn(userID)
             &&accessControl.getUser(userID)->getUserType() == "Student")
     {
@@ -365,7 +380,8 @@ QString cuTPS::addChaptertoCart(QString userID, QString chapterID){
     return QString("fail");
 }
 
-QString cuTPS::addSectiontoCart(QString userID, QString sectionID){
+QString cuTPS::addSectiontoCart(QString userID, QString sectionID)
+{
     if(accessControl.isLoggedIn(userID)
             &&accessControl.getUser(userID)->getUserType() == "Student")
     {
@@ -399,20 +415,20 @@ QString cuTPS::completeCart(QString userID, QString cartID){
     return setCart(cartID.append("|||"));
 }
 
-QString cuTPS::getNextID(QString userID, QString contentType){
-
+QString cuTPS::getNextID(QString userID, QString contentType)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
-
         QString result = datacontrol->getNewID(contentType);
         return result;
 
     } else {
-        return QString("fail");
+        return QString("permission fail");
     }
 }
 
-QString cuTPS::addCourse(QString userID, QString courseInfo){
+QString cuTPS::addCourse(QString userID, QString courseInfo)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -424,7 +440,8 @@ QString cuTPS::addCourse(QString userID, QString courseInfo){
     }
 }
 
-QString cuTPS::addBook(QString userID, QString bookInfo){
+QString cuTPS::addBook(QString userID, QString bookInfo)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -436,7 +453,8 @@ QString cuTPS::addBook(QString userID, QString bookInfo){
     }
 }
 
-QString cuTPS::addChapter(QString userID, QString chapterInfo){
+QString cuTPS::addChapter(QString userID, QString chapterInfo)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -448,7 +466,8 @@ QString cuTPS::addChapter(QString userID, QString chapterInfo){
     }
 }
 
-QString cuTPS::addSection(QString userID, QString sectionInfo){
+QString cuTPS::addSection(QString userID, QString sectionInfo)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -460,7 +479,8 @@ QString cuTPS::addSection(QString userID, QString sectionInfo){
     }
 }
 
-QString cuTPS::addSubContent(QString userID, QString data){
+QString cuTPS::addSubContent(QString userID, QString data)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -472,7 +492,8 @@ QString cuTPS::addSubContent(QString userID, QString data){
     }
 }
 
-QString cuTPS::getEmail(QString userID){
+QString cuTPS::getEmail(QString userID)
+{
     if(accessControl.isLoggedIn(userID) &&
             accessControl.getUser(userID)->getUserType() == "Student"){
         QString result = datacontrol->getEMail(userID);
@@ -481,7 +502,8 @@ QString cuTPS::getEmail(QString userID){
 }
 
 
-QString cuTPS::editContent(QString userID, QString data){
+QString cuTPS::editContent(QString userID, QString data)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -493,7 +515,8 @@ QString cuTPS::editContent(QString userID, QString data){
     }
 }
 
-QString cuTPS::deleteContent(QString userID, QString data){
+QString cuTPS::deleteContent(QString userID, QString data)
+{
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -505,8 +528,7 @@ QString cuTPS::deleteContent(QString userID, QString data){
     }
 }
 
-QString cuTPS::getAllCourse(QString userID)
-{
+QString cuTPS::getAllCourse(QString userID){
     if(accessControl.isLoggedIn(userID)&&
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
@@ -517,3 +539,26 @@ QString cuTPS::getAllCourse(QString userID)
         return QString("fail");
     }
 }
+QString cuTPS::editCourse(QString userID, QString data){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->editCourse(data);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+QString cuTPS::deleteCourse(QString userID, QString data){
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->deleteCourse(data);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+

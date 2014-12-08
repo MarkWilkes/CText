@@ -20,6 +20,7 @@ public:
     QString getChapterInfoFromID(QString chapterID);
     QString getSectionInfoFromID(QString sectionID);
     QString getEMail(QString userID);
+    QString getAllCourse();
 
     QString getCartInfoFromID(QString CartID);
     QString getCartID(QString studentID);
@@ -30,13 +31,14 @@ public:
 
     QString addCourse(QString courseInfo);
     QString addBook(QString bookInfo);
-
     QString addChapter(QString bookIndex);
     QString addSection(QString bookIndex);
     QString addSubContent(QString data);
     QString editContent(QString content);
     QString deleteContent(QString content);
-    QString getAllCourse();
+    QString editCourse(QString content);
+    QString deleteCourse(QString content);
+
 
 };
 

@@ -38,6 +38,8 @@ public:
     QString editContent(QString userID, QString data);
     QString deleteContent(QString userID, QString data);
     QString getAllCourse(QString userID);
+    QString editCourse(QString userID, QString data);
+    QString deleteCourse(QString userID, QString data);
 
 
 private:

@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="LoginPage">
      <widget class="QWidget" name="layoutWidget">
@@ -250,7 +250,7 @@
         <x>140</x>
         <y>80</y>
         <width>339</width>
-        <height>201</height>
+        <height>181</height>
        </rect>
       </property>
       <column>
@@ -304,12 +304,68 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>120</y>
+        <y>320</y>
         <width>101</width>
-        <height>271</height>
+        <height>95</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QPushButton" name="viewCourse_button">
+         <property name="text">
+          <string>View Courses</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="addCourse_button">
+         <property name="text">
+          <string>Add Course</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="editCourse_button">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Edit Course</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QTreeWidget" name="CmViewList_2">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>290</y>
+        <width>339</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>CourseID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Course Name</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>101</width>
+        <height>95</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>
         <widget class="QPushButton" name="viewContent_button">
          <property name="text">
@@ -334,84 +390,20 @@
          </property>
         </widget>
        </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="viewCourse_button">
-         <property name="text">
-          <string>View Course</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="addCourse_button">
-         <property name="text">
-          <string>Add Course</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="editCourse_button">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Edit Course</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="logout_button_2">
-         <property name="text">
-          <string>Log Out</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
-     <widget class="QTreeWidget" name="CmViewList_2">
+     <widget class="QPushButton" name="logout_button_2">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>300</y>
-        <width>339</width>
-        <height>161</height>
+        <x>210</x>
+        <y>460</y>
+        <width>99</width>
+        <height>27</height>
        </rect>
       </property>
-      <column>
-       <property name="text">
-        <string>CourseID</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Course Name</string>
-       </property>
-      </column>
+      <property name="text">
+       <string>Log Out</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="addContentPage">

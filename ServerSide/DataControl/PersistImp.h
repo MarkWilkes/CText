@@ -35,6 +35,8 @@ public:
     virtual QString editContent(QString content) = 0;
     virtual QString deleteContent(QString content) = 0;
     virtual QString getAllCourse() = 0;
+    virtual QString editCourse(QString content)=0;
+    virtual QString deleteCourse(QString content)=0;
 
 };
 

@@ -31,9 +31,9 @@ CmController::CmController(QObject *parent, ClientConnection *cClient, Ui::MainW
     connect(ui->addCourseCancel_button, SIGNAL(clicked()), this, SLOT(addCourseCancelButtonClicked()));
 
     //editCourse page
-    connect(ui->editSubmit_button_2, SIGNAL(clicked()), this, SLOT(courseEditSubmitButtonClicked()));
-    connect(ui->editCancel_button_2, SIGNAL(clicked()), this, SLOT(courseEditCancelButtonClicked()));
-    connect(ui->editDelete_button_2, SIGNAL(clicked()), this, SLOT(courseEditDeleteButtonClicked()));
+    connect(ui->editSubmit_button_2, SIGNAL(clicked()), this, SLOT(editCourseSubmitButtonClicked()));
+    connect(ui->editCancel_button_2, SIGNAL(clicked()), this, SLOT(editCourseCancelButtonClicked()));
+    connect(ui->editDelete_button_2, SIGNAL(clicked()), this, SLOT(editCourseDeleteButtonClicked()));
 
 }
 
@@ -330,8 +330,8 @@ void CmController::editSubmitButtonClicked() {
     newName   = ui->newTitle_textbox->text();
     newPrice  = ui->newPrice_input->text();
 
-    //deleteContent|uri|Book|1|newtitle|newprice
-    c->sendRequest("deleteContent|", temp.append("|").append(type).append("|").append(ID).append("|").append(newName).append("|").append(newPrice));
+    //editContent|uri|Book|1|newtitle|newprice
+    c->sendRequest("editContent|", temp.append("|").append(type).append("|").append(ID).append("|").append(newName).append("|").append(newPrice));
 
     viewContentButtonClicked();
     editCancelButtonClicked();
@@ -396,15 +396,16 @@ void CmController::editCourseButtonClicked(){
             }
 
             //set up and go to edit page
-            ui->stackedWidget->setCurrentIndex(4);
+            ui->stackedWidget->setCurrentIndex(6);
             ui->courseEditID_label->setText(itemID);
             ui->courseOldTitle_label->setText(itemTitle);
         }
 }
 
 void CmController::addCourseSubmitButtonClicked(){
-        ui->error_label_2->setText("");
+       ui->error_label_2->setText("");
        QString courseID, courseTitle;
+       QString temp = userID;
 
        if (ui->addCourseID_textbox->text().isEmpty() || ui->addCourseTitle_textbox->text().isEmpty()){
            ui->error_label_2->setText("Fill in ID/Title fields");
@@ -412,7 +413,7 @@ void CmController::addCourseSubmitButtonClicked(){
        } else {
            courseID = ui->addCourseID_textbox->text();
            courseTitle = ui->addCourseTitle_textbox->text();
-           c->sendRequest("addCourseRequest|",courseID.append("|").append(courseTitle).append("|"));
+           c->sendRequest("addCourseRequest|",temp.append("|").append(courseID).append("|").append(courseTitle).append("|"));
 
            addCourseCancelButtonClicked();
            viewCourseButtonClicked();
@@ -428,16 +429,32 @@ void CmController::addCourseCancelButtonClicked(){
 }
 
 void CmController::editCourseSubmitButtonClicked(){
+    QString temp = userID;
+    QString ID, newTitle;
+    ID        = ui->courseEditID_label->text();
+    newTitle   = ui->newCourseTitle_textbox->text();
 
+    //editCourse|uri|comp3000|newtitle
+    c->sendRequest("editCourseRequest|", temp.append("|").append(ID).append("|").append(newTitle));
+
+    viewCourseButtonClicked();
+    editCancelButtonClicked();
 }
 
 void CmController::editCourseDeleteButtonClicked(){
+    QString temp    = userID;
+    QString ID      = ui->courseEditID_label->text();
 
+    //deleteCourse|uri|comp3000
+    c->sendRequest("deleteCourseRequest|", temp.append("|").append(ID));
+
+    viewCourseButtonClicked();
+    editCancelButtonClicked();
 }
 
 void CmController::editCourseCancelButtonClicked(){
     ui->newCourseTitle_textbox->clear();
-       ui->stackedWidget->setCurrentIndex(2);
+    ui->stackedWidget->setCurrentIndex(2);
 }
 
 QTreeWidgetItem *CmController::addCourse(QString courseID, QString courseName)

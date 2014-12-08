@@ -370,7 +370,6 @@ QString dataController::addCourse(QString courseInfo) {
     {
         qDebug() << "error opening the Course data" << endl;
     }
-
     QTextStream outstream(&file);
     outstream<<courseInfo;
 
@@ -608,8 +607,6 @@ QString dataController::editContent(QString content){
        QString newPrice    = dataSplit[3];
        QString temp;
 
-       QString newItem       = dataID.append("|").append(newTitle).append("|").append(newPrice).append("|");
-
        //edit book
        if(dataType.compare("Book")==0) {
 
@@ -633,8 +630,7 @@ QString dataController::editContent(QString content){
                   {
                       lines.append(temp);
                   } else {
-                      newItem.append(parentInfo.at(3));
-                      lines.append(newItem);
+                      lines.append(dataID.append("|").append(newTitle).append("|").append(newPrice).append("|").append(parentInfo.at(3)));
                   }
 
               }
@@ -677,8 +673,7 @@ QString dataController::editContent(QString content){
                   {
                       lines.append(temp);
                   }else {
-                      newItem.append(parentInfo.at(3));
-                      lines.append(newItem);
+                      lines.append(dataID.append("|").append(newTitle).append("|").append(newPrice).append("|").append(parentInfo.at(3)));
                   }
               }
 
@@ -720,8 +715,7 @@ QString dataController::editContent(QString content){
                   {
                       lines.append(temp);
                   }else {
-                      newItem.append(parentInfo.at(3));
-                      lines.append(newItem);
+                      lines.append(dataID.append("|").append(newTitle).append("|").append(newPrice).append("|").append(parentInfo.at(3)));
                   }
               }
 
@@ -901,4 +895,92 @@ QString dataController::getAllCourse()
     }
     file.close();
     return result;
+}
+
+QString dataController::editCourse(QString content){
+    QStringList datasplit = content.split("|");
+    QString cID       = datasplit[0];
+    QString newTitle  = datasplit[1];
+    QString temp;
+    QFile file("../ServerSide/Data/Courses.txt");
+
+
+    if(!file.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "error opening the Course data" << endl;
+    }
+
+
+    QStringList lines = QStringList(); //temp list of whole file
+    lines.append(file.readLine());
+
+    while (!file.atEnd()){
+        temp = QString(file.readLine());
+        QStringList parentInfo  = temp.split("|");
+
+        if(cID != parentInfo.at(0))
+        {
+            lines.append(temp);
+        } else {
+            lines.append(cID.append("|").append(newTitle).append("|").append(parentInfo.at(2)));
+        }
+
+    }
+
+    file.close();
+    QFile ofile("../ServerSide/Data/newCourses.txt");
+    if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+        qDebug()<<"error opening new Courses"<<endl;
+        return QString("fail");
+    }
+    QTextStream outstream(&ofile);
+    for(int i = 0; i < lines.size(); i++){
+        outstream<<lines.at(i);
+    }
+    ofile.close();
+
+    file.remove();
+    ofile.rename("../ServerSide/Data/newCourses.txt","../ServerSide/Data/Courses.txt");
+}
+
+QString dataController::deleteCourse(QString course){
+    QString cID = course;
+    QString temp;
+    QFile file("../ServerSide/Data/Courses.txt");
+
+
+    if(!file.open(QIODevice::ReadWrite))
+    {
+        qDebug() << "error opening the Course data" << endl;
+    }
+
+
+    QStringList lines = QStringList(); //temp list of whole file
+    lines.append(file.readLine());
+
+    while (!file.atEnd()){
+        temp = QString(file.readLine());
+        QStringList parentInfo  = temp.split("|");
+
+        if(cID != parentInfo.at(0))
+        {
+            lines.append(temp);
+        }
+
+    }
+
+    file.close();
+    QFile ofile("../ServerSide/Data/newCourses.txt");
+    if(!ofile.open(QIODevice::ReadWrite|QIODevice::Text)){
+        qDebug()<<"error opening new Courses"<<endl;
+        return QString("fail to open");
+    }
+    QTextStream outstream(&ofile);
+    for(int i = 0; i < lines.size(); i++){
+        outstream<<lines.at(i);
+    }
+    ofile.close();
+
+    file.remove();
+    ofile.rename("../ServerSide/Data/newCourses.txt","../ServerSide/Data/Courses.txt");
 }
