@@ -12,6 +12,11 @@ CmController::CmController(QObject *parent, ClientConnection *cClient, Ui::MainW
     connect(ui->editContent_button, SIGNAL(clicked()), this, SLOT(editContentButtonClicked()));
     connect(ui->CmViewList, SIGNAL(itemSelectionChanged()),this, SLOT(CMViewListChanged()));
 
+    connect(ui->viewCourse_button, SIGNAL(clicked()), this, SLOT(viewCourseButtonClicked()));
+    connect(ui->addCourse_button, SIGNAL(clicked()), this, SLOT(addCourseButtonClicked()));
+    connect(ui->editCourse_button, SIGNAL(clicked()), this, SLOT(editCourseButtonClicked()));
+    connect(ui->CmViewList_2, SIGNAL(itemSelectionChanged()),this, SLOT(CMCourseListChanged()));
+
     //addContent page
     connect(ui->submit_button, SIGNAL(clicked()), this, SLOT(submitButtonClicked()));
     connect(ui->cancel_button, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
@@ -20,6 +25,16 @@ CmController::CmController(QObject *parent, ClientConnection *cClient, Ui::MainW
     connect(ui->editSubmit_button, SIGNAL(clicked()), this, SLOT(editSubmitButtonClicked()));
     connect(ui->editCancel_button, SIGNAL(clicked()), this, SLOT(editCancelButtonClicked()));
     connect(ui->editDelete_button, SIGNAL(clicked()), this, SLOT(editDeleteButtonClicked()));
+
+    //addCourse page
+    connect(ui->addCourseSubmit_button, SIGNAL(clicked()), this, SLOT(addCourseSubmitButtonClicked()));
+    connect(ui->addCourseCancel_button, SIGNAL(clicked()), this, SLOT(addCourseCancelButtonClicked()));
+
+    //editCourse page
+    connect(ui->editSubmit_button_2, SIGNAL(clicked()), this, SLOT(courseEditSubmitButtonClicked()));
+    connect(ui->editCancel_button_2, SIGNAL(clicked()), this, SLOT(courseEditCancelButtonClicked()));
+    connect(ui->editDelete_button_2, SIGNAL(clicked()), this, SLOT(courseEditDeleteButtonClicked()));
+
 }
 
 void CmController::initialize(QString uID)
@@ -299,6 +314,14 @@ void CmController::CMViewListChanged()
     }
 }
 
+void CmController::CMCourseListChanged()
+{
+    QList<QTreeWidgetItem *> items = ui->CmViewList_2->selectedItems();
+    for(int i = 0; i < items.size(); i++){
+        ui->editCourse_button->setEnabled(true);
+    }
+}
+
 void CmController::editSubmitButtonClicked() {
     QString temp = userID;
     QString type, ID, newName, newPrice;
@@ -332,4 +355,57 @@ void CmController::editCancelButtonClicked() {
     ui->newTitle_textbox->clear();
     ui->newPrice_input->clear();
     ui->stackedWidget->setCurrentIndex(2);
+}
+
+void CmController::viewCourseButtonClicked(){
+
+    ui->CmViewList_2->clear();
+    //get num books
+    QString courseString = c->sendRequest("getAllCourse|", userID);
+    QStringList courses = courseString.split(":", QString::SkipEmptyParts);    //COMP3004|Object-Oriented Software Engineer|1,2,3
+                                                                                //COMP3000|Operating Systems|4,6
+    for(int j = 0; j < courses.size(); j++)
+    {
+        QStringList courseInfo = courses.at(j).split("|");
+        QString CourseID, CourseName;
+        CourseID = courseInfo[0];
+        CourseName = courseInfo[1];
+        addCourse(CourseID,CourseName);
+    }
+}
+
+void CmController::addCourseButtonClicked(){
+
+}
+
+void CmController::editCourseButtonClicked(){
+
+}
+
+void CmController::addCourseSubmitButtonClicked(){
+
+}
+
+void CmController::addCourseCancelButtonClicked(){
+
+}
+
+void CmController::editCourseSubmitButtonClicked(){
+
+}
+
+void CmController::editCourseDeleteButtonClicked(){
+
+}
+
+void CmController::editCourseCancelButtonClicked(){
+
+}
+
+QTreeWidgetItem *CmController::addCourse(QString courseID, QString courseName)
+{
+    QTreeWidgetItem *item = new QTreeWidgetItem(ui->CmViewList_2);
+    item->setText(0,courseID);
+    item->setText(1,courseName);
+    return item;
 }

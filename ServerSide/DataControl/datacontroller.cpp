@@ -884,3 +884,21 @@ QString dataController::deleteContent(QString content){
 
     return("item deleted");
 }
+
+QString dataController::getAllCourse()
+{
+    QFile file("../ServerSide/Data/Courses.txt");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "error opening the data" << endl;
+    }
+    QString courseString = QString(file.readLine());  //skip the first useless line
+    QString result = "";
+    while(!file.atEnd())
+    {
+        courseString = QString(file.readLine()).simplified();
+        result.append(courseString).append(":");
+    }
+    file.close();
+    return result;
+}

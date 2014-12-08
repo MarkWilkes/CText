@@ -37,6 +37,7 @@ public:
     QString addSubContent(QString userID, QString data);
     QString editContent(QString userID, QString data);
     QString deleteContent(QString userID, QString data);
+    QString getAllCourse(QString userID);
 
 
 private:

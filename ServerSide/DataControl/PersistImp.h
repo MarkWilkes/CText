@@ -34,6 +34,7 @@ public:
     virtual QString addSubContent(QString data) = 0;
     virtual QString editContent(QString content) = 0;
     virtual QString deleteContent(QString content) = 0;
+    virtual QString getAllCourse() = 0;
 
 };
 

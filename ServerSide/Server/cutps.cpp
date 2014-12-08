@@ -180,6 +180,12 @@ QString cuTPS::serveRequest(QString index, QString data)
 
         return deleteContent(info[0],temp);
 
+    }else if(index.compare("getAllCourse") == 0){
+
+        qDebug()<< "get all the course request of cart being processed" << endl;
+        qDebug() << data << endl;
+        return getAllCourse(data);
+
     }else {
         return ("invalid request");
     }
@@ -492,6 +498,19 @@ QString cuTPS::deleteContent(QString userID, QString data){
             accessControl.getUser(userID)->getUserType() == "ContentManager"){
 
         QString result = datacontrol->deleteContent(data);
+        return result;
+
+    } else {
+        return QString("fail");
+    }
+}
+
+QString cuTPS::getAllCourse(QString userID)
+{
+    if(accessControl.isLoggedIn(userID)&&
+            accessControl.getUser(userID)->getUserType() == "ContentManager"){
+
+        QString result = datacontrol->getAllCourse();
         return result;
 
     } else {

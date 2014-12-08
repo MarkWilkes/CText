@@ -25,15 +25,34 @@ signals:
     void sendMsg(QString, QString);
 
 private slots:
+    //main window
     void viewContentButtonClicked();
     void addContentButtonClicked();
     void editContentButtonClicked();
+    void viewCourseButtonClicked();
+    void addCourseButtonClicked();
+    void editCourseButtonClicked();
+
     void CMViewListChanged();
+    void CMCourseListChanged();
+
+    //add content
     void submitButtonClicked();
     void cancelButtonClicked();
+
+    //edit content
     void editSubmitButtonClicked();
     void editCancelButtonClicked();
     void editDeleteButtonClicked();
+
+    //add course
+    void addCourseSubmitButtonClicked();
+    void addCourseCancelButtonClicked();
+
+    //edit course
+    void editCourseSubmitButtonClicked();
+    void editCourseDeleteButtonClicked();
+    void editCourseCancelButtonClicked();
 
 private:
     ClientConnection *c;
@@ -41,6 +60,7 @@ private:
     QString userID;
 
     //function for the QTreeWidget
+    QTreeWidgetItem* addCourse(QString courseID, QString courseName);
     QTreeWidgetItem* addRoot(QString ID, QString name, QString price);
     QTreeWidgetItem *addChild(QTreeWidgetItem *parent, QString ID, QString name, QString price);
 };

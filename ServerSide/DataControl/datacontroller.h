@@ -36,7 +36,7 @@ public:
     QString addSubContent(QString data);
     QString editContent(QString content);
     QString deleteContent(QString content);
-
+    QString getAllCourse();
 
 };
 
